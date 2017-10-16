@@ -1,0 +1,18 @@
+# NPM
+node_modules/
+npm-debug.log
+
+# Ignored file & directories
+/sample
+/src
+/test
+/.babel.conf.js
+/.babelrc
+/.eslintrc
+/.nvmrc
+/.travis.yml
+/conf.js
+/gulpfile.js
+/karma.common.conf.js
+/karma.tdd.conf.js
+/karma.test.conf.js
