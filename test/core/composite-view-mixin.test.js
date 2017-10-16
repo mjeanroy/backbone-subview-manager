@@ -79,4 +79,20 @@ describe('CompositeViewMixin', () => {
     subview.trigger(evt);
     expect(spy).not.toHaveBeenCalled();
   });
+
+  it('should remove all subviews', () => {
+    const subview1 = new Backbone.View();
+    const subview2 = new Backbone.View();
+
+    view.addSubView(subview1);
+    view.addSubView(subview2);
+
+    expect(view._subviews.get(subview1.cid)).toBe(subview1);
+    expect(view._subviews.get(subview2.cid)).toBe(subview2);
+
+    view.removeSubViews();
+
+    expect(view._subviews.get(subview1.cid)).toBeUndefined();
+    expect(view._subviews.get(subview2.cid)).toBeUndefined();
+  });
 });

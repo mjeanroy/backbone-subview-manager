@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import {has} from './utils';
+import {forEach, has, keys} from './utils';
 
 /**
  * Flag to check if ES6 Map are supported by the runtime environment (for example,
@@ -104,6 +104,22 @@ export const Cache = SUPPORT_ES6_MAP ? Map : (() => {
       if (has(this._o, key)) {
         this._o[key] = NIL_OBJECT;
       }
+    }
+
+    /**
+     * Executes a provided function once per each key/value pair in the Map object.
+     *
+     * @param {function} iteratee Callback function.
+     * @param {*} ctx Callback context.
+     * @return {void}
+     */
+    forEach(iteratee, ctx) {
+      forEach(keys(this._o), (k) => {
+        const value = this._o[k];
+        if (value !== NIL_OBJECT) {
+          iteratee.call(ctx, this._o[k], k, this);
+        }
+      });
     }
   };
 })();

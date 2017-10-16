@@ -123,4 +123,35 @@ describe('Cache', () => {
     expect(cache.has(k1)).toBe(true);
     expect(cache.get(k1)).toBe(v2);
   });
+
+  it('should execute callback for each element in the cache', () => {
+    const iteratee = jasmine.createSpy('iteratee');
+    const k1 = 'foo';
+    const v1 = {};
+    const k2 = 'bar';
+    const v2 = {};
+
+    cache.set(k1, v1);
+    cache.set(k2, v2);
+    cache.forEach(iteratee);
+
+    expect(iteratee).toHaveBeenCalledWith(v1, k1, cache);
+    expect(iteratee).toHaveBeenCalledWith(v2, k2, cache);
+  });
+
+  it('should execute callback for removed elements', () => {
+    const iteratee = jasmine.createSpy('iteratee');
+    const k1 = 'foo';
+    const v1 = {};
+    const k2 = 'bar';
+    const v2 = {};
+
+    cache.set(k1, v1);
+    cache.set(k2, v2);
+    cache.delete(k1);
+    cache.forEach(iteratee);
+
+    expect(iteratee).not.toHaveBeenCalledWith(v1, k1, jasmine.anything());
+    expect(iteratee).toHaveBeenCalledWith(v2, k2, cache);
+  });
 });

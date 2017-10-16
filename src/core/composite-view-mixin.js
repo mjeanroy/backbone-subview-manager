@@ -52,18 +52,48 @@ export const CompositeViewMixin = {
    * @return {void}
    */
   removeSubView(view) {
+    this._ensureSubViews();
+
     const cid = view.cid;
     if (this._subviews.has(cid)) {
-      // Ensure there is no registered listener.
-      this.stopListening(view);
-
-      // Remove it, if it was not already removed.
-      view.remove();
-
-      // Remove from the subviews entries.
-      this._ensureSubViews();
-      this._subviews.delete(cid);
+      this._removeSubView(view);
+      this._subviews.delete(view.cid);
     }
+  },
+
+  /**
+   * Remove all subviews.
+   *
+   * @return {void}
+   */
+  removeSubViews() {
+    // Remove subviews one by one.
+    this._subviews.forEach((view) => {
+      this._removeSubView(view);
+    });
+
+    // Clear the cache.
+    this._subviews.clear();
+  },
+
+  /**
+   * Remove subview.
+   *
+   * This function should not be called directly, as it does not check if view
+   * has previously been added, and it does not remove the view from the subviews
+   * cache.
+   *
+   * Please use `removeSubView` instead.
+   *
+   * @param {Object} view View to remove.
+   * @return {void}
+   */
+  _removeSubView(view) {
+    // Ensure there is no registered listener.
+    this.stopListening(view);
+
+    // Remove it, if it was not already removed.
+    view.remove();
   },
 
   /**
