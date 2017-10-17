@@ -31,17 +31,23 @@ describe('Cache', () => {
     cache = new Cache();
   });
 
+  it('should initialize cache', () => {
+    expect(cache.size).toBe(0);
+  });
+
   it('should add element in cache', () => {
     const id = 'foo';
     const value = {};
 
     expect(cache.has(id)).toBe(false);
     expect(cache.get(id)).toBeUndefined();
+    expect(cache.size).toBe(0);
 
     cache.set(id, value);
 
     expect(cache.has(id)).toBe(true);
     expect(cache.get(id)).toBe(value);
+    expect(cache.size).toBe(1);
   });
 
   it('should add and remove element in cache', () => {
@@ -57,6 +63,7 @@ describe('Cache', () => {
     expect(cache.get(k1)).toBe(v1);
     expect(cache.has(k2)).toBe(true);
     expect(cache.get(k2)).toBe(v2);
+    expect(cache.size).toBe(2);
 
     cache.delete(k1);
 
@@ -64,6 +71,7 @@ describe('Cache', () => {
     expect(cache.get(k1)).toBeUndefined();
     expect(cache.has(k2)).toBe(true);
     expect(cache.get(k2)).toBe(v2);
+    expect(cache.size).toBe(1);
   });
 
   it('should not try to remove unexisting key', () => {
@@ -77,6 +85,7 @@ describe('Cache', () => {
     expect(cache.get(k1)).toBe(v1);
     expect(cache.has(k2)).toBe(false);
     expect(cache.get(k2)).toBeUndefined();
+    expect(cache.size).toBe(1);
 
     cache.delete(k2);
 
@@ -84,6 +93,7 @@ describe('Cache', () => {
     expect(cache.get(k1)).toBe(v1);
     expect(cache.has(k2)).toBe(false);
     expect(cache.get(k2)).toBeUndefined();
+    expect(cache.size).toBe(1);
   });
 
   it('should clear cache', () => {
@@ -99,6 +109,7 @@ describe('Cache', () => {
     expect(cache.get(k1)).toBe(v1);
     expect(cache.has(k2)).toBe(true);
     expect(cache.get(k2)).toBe(v2);
+    expect(cache.size).toBe(2);
 
     cache.clear();
 
@@ -106,6 +117,7 @@ describe('Cache', () => {
     expect(cache.get(k1)).toBeUndefined();
     expect(cache.has(k2)).toBe(false);
     expect(cache.get(k2)).toBeUndefined();
+    expect(cache.size).toBe(0);
   });
 
   it('should override element in cache', () => {
@@ -117,11 +129,13 @@ describe('Cache', () => {
 
     expect(cache.has(k1)).toBe(true);
     expect(cache.get(k1)).toBe(v1);
+    expect(cache.size).toBe(1);
 
     cache.set(k1, v2);
 
     expect(cache.has(k1)).toBe(true);
     expect(cache.get(k1)).toBe(v2);
+    expect(cache.size).toBe(1);
   });
 
   it('should execute callback for each element in the cache', () => {

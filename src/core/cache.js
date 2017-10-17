@@ -50,6 +50,7 @@ export const Cache = SUPPORT_ES6_MAP ? Map : (() => {
      */
     constructor() {
       this._o = {};
+      this.size = 0;
     }
 
     /**
@@ -82,6 +83,10 @@ export const Cache = SUPPORT_ES6_MAP ? Map : (() => {
      * @return {void}
      */
     set(key, value) {
+      if (!this.has(key)) {
+        this.size++;
+      }
+
       this._o[key] = value;
     }
 
@@ -92,6 +97,7 @@ export const Cache = SUPPORT_ES6_MAP ? Map : (() => {
      */
     clear() {
       this._o = {};
+      this.size = 0;
     }
 
     /**
@@ -103,6 +109,7 @@ export const Cache = SUPPORT_ES6_MAP ? Map : (() => {
     delete(key) {
       if (has(this._o, key)) {
         this._o[key] = NIL_OBJECT;
+        this.size--;
       }
     }
 
@@ -114,12 +121,14 @@ export const Cache = SUPPORT_ES6_MAP ? Map : (() => {
      * @return {void}
      */
     forEach(iteratee, ctx) {
-      forEach(keys(this._o), (k) => {
-        const value = this._o[k];
-        if (value !== NIL_OBJECT) {
-          iteratee.call(ctx, this._o[k], k, this);
-        }
-      });
+      if (this.size > 0) {
+        forEach(keys(this._o), (k) => {
+          const value = this._o[k];
+          if (value !== NIL_OBJECT) {
+            iteratee.call(ctx, this._o[k], k, this);
+          }
+        });
+      }
     }
   };
 })();

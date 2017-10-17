@@ -23,6 +23,7 @@
  */
 
 import {Cache} from './cache';
+import {result} from './utils';
 
 export const CompositeViewMixin = {
   /**
@@ -46,18 +47,31 @@ export const CompositeViewMixin = {
   },
 
   /**
+   * Register subview.
+   *
+   * @param {Object} ViewImpl The view constructor.
+   * @param {Object} options Initialization options.
+   * @return {ViewImpl} The created subview.
+   */
+  initSubView(ViewImpl, options = {}) {
+    const view = new ViewImpl(options);
+    this.addSubView(view);
+    return view;
+  },
+
+  /**
    * Remove subview.
    *
    * @param {Object} view View to remove.
    * @return {void}
    */
   removeSubView(view) {
-    this._ensureSubViews();
-
-    const cid = view.cid;
-    if (this._subviews.has(cid)) {
-      this._removeSubView(view);
-      this._subviews.delete(view.cid);
+    if (this._hasSubViews()) {
+      const cid = view.cid;
+      if (this._subviews.has(cid)) {
+        this._removeSubView(view);
+        this._subviews.delete(cid);
+      }
     }
   },
 
@@ -67,13 +81,26 @@ export const CompositeViewMixin = {
    * @return {void}
    */
   removeSubViews() {
-    // Remove subviews one by one.
-    this._subviews.forEach((view) => {
-      this._removeSubView(view);
-    });
+    if (this._hasSubViews()) {
+      // Remove subviews one by one.
+      this._subviews.forEach((view) => {
+        this._removeSubView(view);
+      });
 
-    // Clear the cache.
-    this._subviews.clear();
+      // Clear the cache.
+      this._subviews.clear();
+    }
+  },
+
+  /**
+   * Check if the view has active subviews.
+   *
+   * @return {boolean} `true` if views has active subviews, `false` otherwise.
+   */
+  _hasSubViews() {
+    // Not that `size` property is a function in old versions of Firefox.
+    // Make it safe: handle property or function.
+    return !!this._subviews && result(this._subviews, 'size') > 0;
   },
 
   /**

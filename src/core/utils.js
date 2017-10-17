@@ -27,3 +27,4 @@ import _ from 'underscore';
 export const has = _.has;
 export const forEach = _.forEach;
 export const keys = _.keys;
+export const result = _.result;

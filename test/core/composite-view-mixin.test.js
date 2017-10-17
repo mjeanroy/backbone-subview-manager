@@ -35,8 +35,12 @@ describe('CompositeViewMixin', () => {
 
   it('should initialize subviews', () => {
     expect(view._subviews).not.toBeDefined();
+    expect(view._hasSubViews()).toBe(false);
+
     view.initializeSubViews();
+
     expect(view._subviews).toBeDefined();
+    expect(view._hasSubViews()).toBe(false);
   });
 
   it('should add and remove subviews', () => {
@@ -44,10 +48,14 @@ describe('CompositeViewMixin', () => {
     const cid = subview.cid;
 
     view.addSubView(subview);
+
     expect(view._subviews.get(cid)).toBe(subview);
+    expect(view._hasSubViews()).toBe(true);
 
     view.removeSubView(subview);
+
     expect(view._subviews.get(cid)).not.toBeDefined();
+    expect(view._hasSubViews()).toBe(false);
   });
 
   it('should add multiple subviews', () => {
@@ -61,6 +69,7 @@ describe('CompositeViewMixin', () => {
 
     expect(view._subviews.get(cid1)).toBe(subview1);
     expect(view._subviews.get(cid2)).toBe(subview2);
+    expect(view._hasSubViews()).toBe(true);
   });
 
   it('should stop to listen to view events when removed', () => {
@@ -89,10 +98,34 @@ describe('CompositeViewMixin', () => {
 
     expect(view._subviews.get(subview1.cid)).toBe(subview1);
     expect(view._subviews.get(subview2.cid)).toBe(subview2);
+    expect(view._hasSubViews()).toBe(true);
 
     view.removeSubViews();
 
     expect(view._subviews.get(subview1.cid)).toBeUndefined();
     expect(view._subviews.get(subview2.cid)).toBeUndefined();
+    expect(view._hasSubViews()).toBe(false);
+  });
+
+  it('should not try to remove all subviews if view does not have subviews', () => {
+    expect(view._hasSubViews()).toBe(false);
+    expect(view._subviews).not.toBeDefined();
+
+    view.removeSubViews();
+
+    expect(view._subviews).not.toBeDefined();
+    expect(view._hasSubViews()).toBe(false);
+  });
+
+  it('should not try to remove subview if view does not have subviews', () => {
+    const subview = new Backbone.View();
+
+    expect(view._subviews).not.toBeDefined();
+    expect(view._hasSubViews()).toBe(false);
+
+    view.removeSubView(subview);
+
+    expect(view._subviews).not.toBeDefined();
+    expect(view._hasSubViews()).toBe(false);
   });
 });
