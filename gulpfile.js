@@ -38,6 +38,7 @@ const rename = require('gulp-rename');
 const KarmaServer = karma.Server;
 const conf = require('./conf');
 const rollupConf = require('./rollup.conf');
+const uglifyConf = require('./uglify.conf');
 
 gulp.task('clean', () => {
   return del(conf.dist);
@@ -71,7 +72,7 @@ gulp.task('build', ['clean'], () => {
         .pipe(babel())
         .pipe(headerComment({file: conf.license}))
         .pipe(gulp.dest(path.join(conf.dist, 'es5')))
-        .pipe(uglify())
+        .pipe(uglify(uglifyConf))
         .pipe(rename({extname: '.min.js'}))
         .pipe(gulp.dest(path.join(conf.dist, 'es5')));
     });
