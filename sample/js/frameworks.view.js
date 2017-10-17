@@ -53,7 +53,6 @@ import {FrameworkView} from './framework.view';
     * @return {void}
     */
    render() {
-     console.log('render');
      const template = Backbone.$('[data-template-id="frameworks"]').html();
      const templateFn = _.template(template);
      const output = templateFn();
@@ -61,10 +60,14 @@ import {FrameworkView} from './framework.view';
 
      const container = this.$('.js-frameworks');
 
-     this.collection.forEach((model) => {
-        const subview = this.initSubView(FrameworkView, {model});
+     this.addSubViews(this.collection.map((model) => {
+        const subview = new FrameworkView({
+           model,
+        });
+
         subview.render();
         container.append(subview.$el);
-     });
+        return subview;
+     }));
    }
  }

@@ -54,7 +54,9 @@ export class FrameworkView extends Backbone.View {
       model: this.model.toJSON(),
     });
 
-     this.$el.html(output);
+    this.$el.html(output);
+
+    return this;
   }
 
   /**
