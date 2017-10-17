@@ -10,7 +10,8 @@
     "build": "gulp build",
     "lint": "gulp lint",
     "test": "gulp test",
-    "tdd": "gulp tdd"
+    "tdd": "gulp tdd",
+    "travis": "gulp travis"
   },
   "keywords": [
     "backbone"

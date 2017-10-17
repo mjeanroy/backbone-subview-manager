@@ -63,6 +63,8 @@ gulp.task('lint', () => {
   });
 });
 
+gulp.task('travis', ['test']);
+
 gulp.task('build', ['clean'], () => {
   return applyRollup(rollupConf)
     .then((src) => {
