@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Backbone SubViewManager</title>
+    <link rel="stylesheet" href="/vendors/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/app.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/index.html">Backbone SubViewManager</a>
+        </div>
+      </div>
+    </nav>
+
+    <div id="main" class="container"></div>
+
+    <script type="text/javascript" src="/.tmp/bundle.js"></script>
+
+    <script type="text/template" data-template-id="framework">
+      <div class="thumbnail">
+        <div class="pull-right">
+          <a href="#">&times;</a>
+        </div>
+        <div class="caption">
+          <h3><%= model.title %></h3>
+          <p><%= model.description %></p>
+          <p><a href="<%= model.url %>"><%= model.url %></a></p>
+        </div>
+      </div>
+    </script>
+
+    <script type="text/template" data-template-id="frameworks">
+      <div class="row js-frameworks"></div>
+    </script>
+  </body>
+</html>

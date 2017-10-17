@@ -24,9 +24,11 @@
     "bower_components",
     "src",
     "test",
+    "sample",
     "gulpfile.js",
     "conf.js",
-    "karma.*.conf.js"
+    "karma.*.conf.js",
+    "*.conf.js"
   ],
   "dependencies": {
     "backbone": ">=1.0.0",

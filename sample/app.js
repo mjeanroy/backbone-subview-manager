@@ -22,21 +22,35 @@
  * SOFTWARE.
  */
 
-const path = require('path');
-const ROOT = __dirname;
+import Backbone from 'backbone';
+import {CompositeView} from 'backbone-subview-manager';
+import {FrameworksView} from './js/frameworks.view';
 
-module.exports = {
-  root: ROOT,
-  src: path.join(ROOT, 'src'),
-  test: path.join(ROOT, 'test'),
-  dist: path.join(ROOT, 'dist'),
-  sample: path.join(ROOT, 'sample'),
-  license: path.join(ROOT, 'LICENSE'),
+/**
+ * Application.
+ * @class
+ */
+class App extends CompositeView {
+  /**
+   * Initialize application.
+   * @return {void}
+   * @override
+   */
+  initialize() {
+    this.$el = Backbone.$('#main');
+    this.render();
+  }
 
-  moduleName: 'BackboneSubviewManager',
-  loose: true,
-  globals: {
-    underscore: '_',
-    backbone: 'Backbone',
-  },
-};
+  /**
+   * Get view class name.
+   * @return {string} View class name.
+   * @override
+   */
+  render() {
+    const view = this.initSubView(FrameworksView);
+    this.$el.html(view.$el);
+  }
+}
+
+// Start and export app.
+export const app = new App();

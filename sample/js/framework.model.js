@@ -22,21 +22,11 @@
  * SOFTWARE.
  */
 
-const path = require('path');
-const ROOT = __dirname;
+import Backbone from 'backbone';
 
-module.exports = {
-  root: ROOT,
-  src: path.join(ROOT, 'src'),
-  test: path.join(ROOT, 'test'),
-  dist: path.join(ROOT, 'dist'),
-  sample: path.join(ROOT, 'sample'),
-  license: path.join(ROOT, 'LICENSE'),
-
-  moduleName: 'BackboneSubviewManager',
-  loose: true,
-  globals: {
-    underscore: '_',
-    backbone: 'Backbone',
-  },
-};
+ /**
+  * Framework Model Object.
+  * @class
+  */
+ export class FrameworkModel extends Backbone.Model {
+ }

@@ -22,21 +22,8 @@
  * SOFTWARE.
  */
 
-const path = require('path');
-const ROOT = __dirname;
-
-module.exports = {
-  root: ROOT,
-  src: path.join(ROOT, 'src'),
-  test: path.join(ROOT, 'test'),
-  dist: path.join(ROOT, 'dist'),
-  sample: path.join(ROOT, 'sample'),
-  license: path.join(ROOT, 'LICENSE'),
-
-  moduleName: 'BackboneSubviewManager',
-  loose: true,
-  globals: {
-    underscore: '_',
-    backbone: 'Backbone',
-  },
-};
+.thumbnail {
+  min-height: 200px;
+  max-height: 200px;
+  height: 200px;
+}

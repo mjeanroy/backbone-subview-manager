@@ -120,7 +120,6 @@ export const CompositeViewMixin = {
    * @return {void}
    */
   _removeSubView(view) {
-    debugger;
     // Ensure there is no registered listener.
     this.stopListening(view);
 

@@ -23,20 +23,25 @@
  */
 
 const path = require('path');
-const ROOT = __dirname;
+const express = require('express');
+const connectLivereload = require('connect-livereload');
+const conf = require('../conf');
 
-module.exports = {
-  root: ROOT,
-  src: path.join(ROOT, 'src'),
-  test: path.join(ROOT, 'test'),
-  dist: path.join(ROOT, 'dist'),
-  sample: path.join(ROOT, 'sample'),
-  license: path.join(ROOT, 'LICENSE'),
+const port = 8080;
+const app = express();
 
-  moduleName: 'BackboneSubviewManager',
-  loose: true,
-  globals: {
-    underscore: '_',
-    backbone: 'Backbone',
-  },
-};
+app.use(connectLivereload());
+
+// Static directories
+app.use('/vendors', express.static(path.join(conf.root, 'node_modules')));
+app.use('/dist', express.static(path.join(conf.sample, '.tmp')));
+app.use('/dist', express.static(path.join(conf.dist)));
+app.use('/', express.static(path.join(conf.sample)));
+
+const frameworks = require('./techs.json');
+
+app.get('/api/frameworks', (req, res) => res.json(frameworks));
+
+app.listen(port, () => {
+  console.log('Server listening on : http://localhost:' + port);
+});

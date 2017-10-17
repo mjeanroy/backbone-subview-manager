@@ -22,21 +22,28 @@
  * SOFTWARE.
  */
 
-const path = require('path');
-const ROOT = __dirname;
+import Backbone from 'backbone';
+import {FrameworkModel} from './framework.model';
 
-module.exports = {
-  root: ROOT,
-  src: path.join(ROOT, 'src'),
-  test: path.join(ROOT, 'test'),
-  dist: path.join(ROOT, 'dist'),
-  sample: path.join(ROOT, 'sample'),
-  license: path.join(ROOT, 'LICENSE'),
+/**
+ * Framework Collection.
+ * @class
+ */
+export class FrameworksCollection extends Backbone.Collection {
+  /**
+   * Initialize Collection.
+   * @return {void}
+   */
+  initialize() {
+    this.model = FrameworkModel;
+  }
 
-  moduleName: 'BackboneSubviewManager',
-  loose: true,
-  globals: {
-    underscore: '_',
-    backbone: 'Backbone',
-  },
-};
+  /**
+   * Collection URL.
+   * @return {string} URL.
+   * @override
+   */
+  url() {
+    return '/api/frameworks';
+  }
+}
