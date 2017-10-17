@@ -23,7 +23,7 @@
  */
 
 import {Cache} from './cache';
-import {result} from './utils';
+import {isString, result} from './utils';
 
 export const CompositeViewMixin = {
   /**
@@ -67,9 +67,10 @@ export const CompositeViewMixin = {
    */
   removeSubView(view) {
     if (this._hasSubViews()) {
-      const cid = view.cid;
+      const cid = isString(view) ? view : view.cid;
       if (this._subviews.has(cid)) {
-        this._removeSubView(view);
+        const subview = this._subviews.get(cid);
+        this._removeSubView(subview);
         this._subviews.delete(cid);
       }
     }
