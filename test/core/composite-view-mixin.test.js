@@ -73,6 +73,36 @@ describe('CompositeViewMixin', () => {
     expect(view._hasSubViews()).toBe(false);
   });
 
+  it('should remove subview when subview trigger the remove event', () => {
+    const subview = new Backbone.View();
+    const cid = subview.cid;
+
+    view.addSubView(subview);
+
+    expect(view._subviews.get(cid)).toBe(subview);
+    expect(view._hasSubViews()).toBe(true);
+
+    subview.trigger('remove');
+
+    expect(view._subviews.get(cid)).not.toBeDefined();
+    expect(view._hasSubViews()).toBe(false);
+  });
+
+  it('should remove subview when subview trigger the dispose event', () => {
+    const subview = new Backbone.View();
+    const cid = subview.cid;
+
+    view.addSubView(subview);
+
+    expect(view._subviews.get(cid)).toBe(subview);
+    expect(view._hasSubViews()).toBe(true);
+
+    subview.trigger('dispose');
+
+    expect(view._subviews.get(cid)).not.toBeDefined();
+    expect(view._hasSubViews()).toBe(false);
+  });
+
   it('should add multiple subviews', () => {
     const subview1 = new Backbone.View();
     const subview2 = new Backbone.View();

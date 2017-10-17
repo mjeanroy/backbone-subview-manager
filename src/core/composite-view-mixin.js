@@ -23,7 +23,7 @@
  */
 
 import {Cache} from './cache';
-import {isString, result} from './utils';
+import {isString, partial, result} from './utils';
 
 export const CompositeViewMixin = {
   /**
@@ -44,6 +44,10 @@ export const CompositeViewMixin = {
   addSubView(view) {
     this._ensureSubViews();
     this._subviews.set(view.cid, view);
+
+    // Register some events, if the child view trigger one of these
+    // events, the child view will be automatically removed.
+    this.listenToOnce(view, 'remove dispose', partial(this.removeSubView, view));
   },
 
   /**
@@ -69,8 +73,7 @@ export const CompositeViewMixin = {
     if (this._hasSubViews()) {
       const cid = isString(view) ? view : view.cid;
       if (this._subviews.has(cid)) {
-        const subview = this._subviews.get(cid);
-        this._removeSubView(subview);
+        this._removeSubView(this._subviews.get(cid));
         this._subviews.delete(cid);
       }
     }
@@ -117,6 +120,7 @@ export const CompositeViewMixin = {
    * @return {void}
    */
   _removeSubView(view) {
+    debugger;
     // Ensure there is no registered listener.
     this.stopListening(view);
 
