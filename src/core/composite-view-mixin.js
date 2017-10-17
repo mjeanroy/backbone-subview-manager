@@ -23,7 +23,7 @@
  */
 
 import {Cache} from './cache';
-import {isString, partial, result} from './utils';
+import {forEach, isString, partial, result} from './utils';
 
 export const CompositeViewMixin = {
   /**
@@ -43,11 +43,21 @@ export const CompositeViewMixin = {
    */
   addSubView(view) {
     this._ensureSubViews();
-    this._subviews.set(view.cid, view);
+    this._addSubView(view);
+  },
 
-    // Register some events, if the child view trigger one of these
-    // events, the child view will be automatically removed.
-    this.listenToOnce(view, 'remove dispose', partial(this.removeSubView, view));
+  /**
+   * Register subview.
+   *
+   * @param {Array<Object>} views Array of views to add.
+   * @return {void}
+   */
+  addSubViews(views) {
+    this._ensureSubViews();
+
+    forEach(views, (view) => {
+      this._addSubView(view);
+    });
   },
 
   /**
@@ -125,6 +135,22 @@ export const CompositeViewMixin = {
 
     // Remove it, if it was not already removed.
     view.remove();
+  },
+
+  /**
+   * Add subview.
+   * This function should not be called directly, please use `addSubView` instead.
+   *
+   * @param {Object} view View to remove.
+   * @return {void}
+   */
+  _addSubView(view) {
+    // Register view.
+    this._subviews.set(view.cid, view);
+
+    // Register some events, if the child view trigger one of these
+    // events, the child view will be automatically removed.
+    this.listenToOnce(view, 'remove dispose', partial(this.removeSubView, view));
   },
 
   /**

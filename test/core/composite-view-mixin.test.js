@@ -58,6 +58,20 @@ describe('CompositeViewMixin', () => {
     expect(view._hasSubViews()).toBe(false);
   });
 
+  it('should add array of subviews', () => {
+    const subview1 = new Backbone.View();
+    const cid1 = subview1.cid;
+
+    const subview2 = new Backbone.View();
+    const cid2 = subview2.cid;
+
+    view.addSubViews([subview1, subview2]);
+
+    expect(view._subviews.get(cid1)).toBe(subview1);
+    expect(view._subviews.get(cid2)).toBe(subview2);
+    expect(view._hasSubViews()).toBe(true);
+  });
+
   it('should add and remove subview using cid', () => {
     const subview = new Backbone.View();
     const cid = subview.cid;
