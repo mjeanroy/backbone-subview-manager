@@ -23,13 +23,25 @@
  */
 
 const path = require('path');
+const del = require('del');
 const gulp = require('gulp');
 const eslint = require('gulp-eslint');
 const karma = require('karma');
 const gutil = require('gulp-util');
 const Q = require('q');
-const conf = require('./conf');
+const rollup = require('rollup');
+const babel = require('gulp-babel');
+const uglify = require('gulp-uglify');
+const headerComment = require('gulp-header-comment');
+const stripBanner = require('gulp-strip-banner');
+const rename = require('gulp-rename');
 const KarmaServer = karma.Server;
+const conf = require('./conf');
+const rollupConf = require('./rollup.conf');
+
+gulp.task('clean', () => {
+  return del(conf.dist);
+});
 
 gulp.task('lint', () => {
   const sources = [
@@ -50,6 +62,21 @@ gulp.task('lint', () => {
   });
 });
 
+gulp.task('build', ['clean'], () => {
+  return applyRollup(rollupConf)
+    .then((src) => {
+      gutil.log(gutil.colors.gray(`Creating ES5 bundle`));
+      return gulp.src(src)
+        .pipe(stripBanner())
+        .pipe(babel())
+        .pipe(headerComment({file: conf.license}))
+        .pipe(gulp.dest(path.join(conf.dist, 'es5')))
+        .pipe(uglify())
+        .pipe(rename({extname: '.min.js'}))
+        .pipe(gulp.dest(path.join(conf.dist, 'es5')));
+    });
+});
+
 /**
  * Run tests with Karma.
  *
@@ -68,3 +95,17 @@ function runKarma(mode) {
   server.start();
   return deferred.promise;
 }
+
+/**
+ * Apply rollup.
+ *
+ * @param {Object} config Rollup configuration.
+ * @return {Promise} The done promise.
+ */
+function applyRollup(config) {
+  gutil.log(gutil.colors.gray(`Rollup entry point`));
+  return rollup.rollup(config).then((bundle) => {
+    gutil.log(gutil.colors.gray(`Writing rollup bundle`));
+    return bundle.write(config.output).then(() => config.output.file);
+  });
+};

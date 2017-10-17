@@ -26,10 +26,5 @@
  * Public API.
  */
 
-export {DomTemplateManager} from './core/dom-template-manager';
-export {RemoteTemplateManager} from './core/remote-template-manager';
-export {compile, overrideCompile} from './core/compile';
-export {templateManager, overrideTemplateManager} from './core/template-manager';
-export {TemplateViewMixin} from './core/template-view-mixin';
-export {TemplateView} from './core/template-view';
-export {VIEW_RENDER_LOADING, VIEW_RENDER_SUCCESS, VIEW_RENDER_ERROR, VIEW_RENDER_DONE} from './core/view-events';
+export {CompositeViewMixin} from './core/composite-view-mixin';
+export {CompositeView} from './core/composite-view';

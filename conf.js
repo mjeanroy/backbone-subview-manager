@@ -29,6 +29,8 @@ module.exports = {
   root: ROOT,
   src: path.join(ROOT, 'src'),
   test: path.join(ROOT, 'test'),
+  dist: path.join(ROOT, 'dist'),
+  license: path.join(ROOT, 'LICENSE'),
 
   moduleName: 'BackboneSubviewManager',
   loose: true,

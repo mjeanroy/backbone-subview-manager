@@ -6,6 +6,8 @@
   "module": "dist/backbone-subview-manager.js",
   "jsnext:main": "dist/backbone-subview-manager.js",
   "scripts": {
+    "clean": "gulp clean",
+    "build": "gulp build",
     "lint": "gulp lint",
     "test": "gulp test",
     "tdd": "gulp tdd"
@@ -50,10 +52,16 @@
     "babel-plugin-transform-es3-modules-literals": "0.0.3",
     "babel-plugin-transform-es3-property-literals": "6.22.0",
     "backbone": ">=1.0.0",
+    "del": "3.0.0",
     "eslint": "4.8.0",
     "eslint-config-google": "0.9.1",
     "gulp": "3.9.1",
+    "gulp-babel": "7.0.0",
     "gulp-eslint": "4.0.0",
+    "gulp-header-comment": "0.2.1",
+    "gulp-rename": "1.2.2",
+    "gulp-strip-banner": "0.0.2",
+    "gulp-uglify": "3.0.0",
     "gulp-util": "3.0.8",
     "jasmine-core": "2.8.0",
     "jquery": "1.12.4",
@@ -71,6 +79,9 @@
     "phantomjs-prebuilt": "2.1.15",
     "q": "1.5.0",
     "rollup": "0.50.0",
+    "rollup-plugin-license": "0.5.0",
+    "rollup-plugin-strip-banner": "0.2.0",
+    "uglify-js": "3.1.4",
     "underscore": ">=1.6.0"
   }
 }
