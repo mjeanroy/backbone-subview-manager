@@ -35,14 +35,15 @@ export class MyView extends CompositeView {
   }
 
   render() {
-    this.collection.forEach((todo) => {
+    this.addSubViews(this.collection.map((todo) => {
       const todoView = new TodoView({
         model: todo,
       });
 
-      this.$el.append(todoView.render().el);
-      this.addSubView(todoView);
-    });
+      todoView.render();
+      this.$el.append(todoView.$el);
+      return todoView;
+    }));
   }
 }
 ```
@@ -80,7 +81,8 @@ export class MyView extends CompositeView {
         model: todo,
       }));
 
-      this.$el.append(todoView.render().el);
+      todoView.render();
+      this.$el.append(todoView.$el);
     });
   }
 }
@@ -90,19 +92,23 @@ export class MyView extends CompositeView {
 
 The following methods can be used on any `CompositeView`:
 
-##### `[void] addSubView(view)`
+##### `[this] addSubView(view)`
 
 Register the subview that will be automatically removed when the parent view is removed.
+
+##### `[this] addSubViews(views)`
+
+Register array of subview that will be automatically removed when the parent view is removed.
 
 ##### `[view] initSubView(ViewImpl, options)`
 
 Create the subview (using `options` as constructor parameter), and register it using the `addSubView` method.
 
-##### `[void] removeSubView(view)`
+##### `[this] removeSubView(view)`
 
 Remove the subview.
 
-##### `[void] removeSubViews()`
+##### `[this] removeSubViews()`
 
 Remove all subviews.
 
