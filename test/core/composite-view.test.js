@@ -35,8 +35,9 @@ describe('CompositeView', () => {
     expect(view._subviews).not.toBeDefined();
     expect(view._hasSubViews()).toBe(false);
 
-    view.initializeSubViews();
+    const result = view.initializeSubViews();
 
+    expect(result).toBe(view);
     expect(view._subviews).toBeDefined();
     expect(view._hasSubViews()).toBe(false);
   });
@@ -45,13 +46,15 @@ describe('CompositeView', () => {
     const subview = new Backbone.View();
     const cid = subview.cid;
 
-    view.addSubView(subview);
+    const r1 = view.addSubView(subview);
 
+    expect(r1).toBe(view);
     expect(view._subviews.get(cid)).toBe(subview);
     expect(view._hasSubViews()).toBe(true);
 
-    view.removeSubView(subview);
+    const r2 = view.removeSubView(subview);
 
+    expect(r2).toBe(view);
     expect(view._subviews.get(cid)).not.toBeDefined();
     expect(view._hasSubViews()).toBe(false);
   });
@@ -98,8 +101,9 @@ describe('CompositeView', () => {
     expect(view._subviews.get(subview2.cid)).toBe(subview2);
     expect(view._hasSubViews()).toBe(true);
 
-    view.removeSubViews();
+    const result = view.removeSubViews();
 
+    expect(result).toBe(view);
     expect(view._subviews.get(subview1.cid)).toBeUndefined();
     expect(view._subviews.get(subview2.cid)).toBeUndefined();
     expect(view._hasSubViews()).toBe(false);
@@ -109,8 +113,9 @@ describe('CompositeView', () => {
     expect(view._hasSubViews()).toBe(false);
     expect(view._subviews).not.toBeDefined();
 
-    view.removeSubViews();
+    const result = view.removeSubViews();
 
+    expect(result).toBe(view);
     expect(view._subviews).not.toBeDefined();
     expect(view._hasSubViews()).toBe(false);
   });

@@ -29,28 +29,30 @@ export const CompositeViewMixin = {
   /**
    * Initialize subviews entries.
    *
-   * @return {void}
+   * @return {this} The view (for chaining).
    */
   initializeSubViews() {
     this._subviews = new Cache();
+    return this;
   },
 
   /**
    * Register subview.
    *
    * @param {Object} view The view.
-   * @return {void}
+   * @return {this} The view (for chaining).
    */
   addSubView(view) {
     this._ensureSubViews();
     this._addSubView(view);
+    return this;
   },
 
   /**
    * Register subview.
    *
    * @param {Array<Object>} views Array of views to add.
-   * @return {void}
+   * @return {this} The view (for chaining).
    */
   addSubViews(views) {
     this._ensureSubViews();
@@ -58,6 +60,8 @@ export const CompositeViewMixin = {
     forEach(views, (view) => {
       this._addSubView(view);
     });
+
+    return this;
   },
 
   /**
@@ -77,7 +81,7 @@ export const CompositeViewMixin = {
    * Remove subview.
    *
    * @param {Object} view View to remove.
-   * @return {void}
+   * @return {this} The view (for chaining).
    */
   removeSubView(view) {
     if (this._hasSubViews()) {
@@ -87,12 +91,14 @@ export const CompositeViewMixin = {
         this._subviews.delete(cid);
       }
     }
+
+    return this;
   },
 
   /**
    * Remove all subviews.
    *
-   * @return {void}
+   * @return {this} The view (for chaining).
    */
   removeSubViews() {
     if (this._hasSubViews()) {
@@ -104,6 +110,8 @@ export const CompositeViewMixin = {
       // Clear the cache.
       this._subviews.clear();
     }
+
+    return this;
   },
 
   /**
