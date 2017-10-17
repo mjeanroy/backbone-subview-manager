@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
-import './cache.test';
-import './composite-view-mixin.test';
-import './composite-view.test';
+import Backbone from 'backbone';
+import {CompositeViewMixin} from './composite-view-mixin';
+
+export const CompositeView = Backbone.View.extend(CompositeViewMixin).extend({
+  /**
+   * Remove view, and its subviews.
+   *
+   * @return {CompositeView} The view (for chaining).
+   * @override
+   */
+  remove() {
+    this.removeSubViews();
+    return Backbone.View.prototype.remove.call(this);
+  },
+});
