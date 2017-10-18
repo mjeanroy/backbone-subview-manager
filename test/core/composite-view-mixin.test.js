@@ -54,7 +54,7 @@ describe('CompositeViewMixin', () => {
     expect(view._subviews.get(cid)).toBe(subview);
     expect(view._hasSubViews()).toBe(true);
 
-    view.removeSubView(subview);
+    view.removeSubViews(subview);
 
     expect(view._subviews.get(cid)).not.toBeDefined();
     expect(view._hasSubViews()).toBe(false);
@@ -71,7 +71,7 @@ describe('CompositeViewMixin', () => {
     expect(view._subviews.get(cid)).toBe(subview);
     expect(view._hasSubViews()).toBe(true);
 
-    view.removeSubView(subview);
+    view.removeSubViews(subview);
 
     expect(view._subviews.get(cid)).not.toBeDefined();
     expect(view._hasSubViews()).toBe(false);
@@ -102,7 +102,7 @@ describe('CompositeViewMixin', () => {
     expect(view._subviews.get(cid)).toBe(subview);
     expect(view._hasSubViews()).toBe(true);
 
-    const r2 = view.removeSubView(cid);
+    const r2 = view.removeSubViews(cid);
 
     expect(r2).toBe(view);
     expect(view._subviews.get(cid)).not.toBeDefined();
@@ -167,7 +167,7 @@ describe('CompositeViewMixin', () => {
 
     spy.calls.reset();
 
-    view.removeSubView(subview);
+    view.removeSubViews(subview);
     subview.trigger(evt);
     expect(spy).not.toHaveBeenCalled();
   });
@@ -208,7 +208,7 @@ describe('CompositeViewMixin', () => {
     expect(view._subviews).not.toBeDefined();
     expect(view._hasSubViews()).toBe(false);
 
-    const result = view.removeSubView(subview);
+    const result = view.removeSubViews(subview);
 
     expect(result).toBe(view);
     expect(view._subviews).not.toBeDefined();

@@ -35,6 +35,7 @@ export class MyView extends CompositeView {
   }
 
   render() {
+    this.removeSubViews();
     this.addSubViews(this.collection.map((todo) => {
       const todoView = new TodoView({
         model: todo,
@@ -76,6 +77,7 @@ export class MyView extends CompositeView {
   }
 
   render() {
+    this.removeSubViews();
     this.collection.forEach((todo) => {
       const todoView = this.initSubView(TodoView, {
         model: todo,
@@ -100,13 +102,10 @@ Register subview or array of subview that will be automatically removed when the
 
 Create the subview (using `options` as constructor parameter), and register it using the `addSubView` method.
 
-##### `[this] removeSubView(view)`
+##### `[this] removeSubViews(views)`
 
-Remove the subview.
-
-##### `[this] removeSubViews()`
-
-Remove all subviews.
+Remove the subview, or array of subviews (the subview may be the view instance or the view cid).
+Calling this function without parameters will remove all subviews.
 
 #### History
 

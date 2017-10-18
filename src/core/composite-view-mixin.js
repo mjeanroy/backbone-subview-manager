@@ -23,7 +23,7 @@
  */
 
 import {Cache} from './cache';
-import {forEach, isString, isArray, result} from './utils';
+import {forEach, isString, isArray, isNull, isUndefined, result} from './utils';
 
 export const CompositeViewMixin = {
   /**
@@ -70,17 +70,18 @@ export const CompositeViewMixin = {
   },
 
   /**
-   * Remove subview.
+   * Remove subview (or array of subviews).
+   * If the function is called without any parameters, all views will be removed.
    *
-   * @param {Object} view View to remove.
+   * @param {Object} views View, or array of views to remove.
    * @return {this} The view (for chaining).
    */
-  removeSubView(view) {
+  removeSubViews(views) {
     if (this._hasSubViews()) {
-      const cid = isString(view) ? view : view.cid;
-      if (this._subviews.has(cid)) {
-        this._removeSubView(this._subviews.get(cid));
-        this._subviews.delete(cid);
+      if (isNull(views) || isUndefined(views)) {
+        this._clearSubViews();
+      } else {
+        this._removeEachSubViews(views);
       }
     }
 
@@ -88,22 +89,39 @@ export const CompositeViewMixin = {
   },
 
   /**
-   * Remove all subviews.
+   * Clear all subviews.
+   * This method should not be called publicly, please use `removeSubViews` instead.
    *
-   * @return {this} The view (for chaining).
+   * @return {void}
    */
-  removeSubViews() {
-    if (this._hasSubViews()) {
-      // Remove subviews one by one.
-      this._subviews.forEach((view) => {
-        this._removeSubView(view);
-      });
+  _clearSubViews() {
+    // Remove subviews one by one.
+    this._subviews.forEach((view) => {
+      this._removeSubView(view);
+    });
 
-      // Clear the cache.
-      this._subviews.clear();
-    }
+    // Clear the cache.
+    this._subviews.clear();
+  },
 
-    return this;
+  /**
+   * Remove each view, or array of views.
+   * A view may be:
+   * - The view instance.
+   * - The view cid.
+   *
+   * @param {string|Object|Array<string|object>} views View, or array of views, to remove.
+   * @return {void}
+   */
+  _removeEachSubViews(views) {
+    const array = isArray(views) ? views : [views];
+    forEach(array, (view) => {
+      const cid = isString(view) ? view : view.cid;
+      if (this._subviews.has(cid)) {
+        this._removeSubView(this._subviews.get(cid));
+        this._subviews.delete(cid);
+      }
+    });
   },
 
   /**
@@ -151,7 +169,7 @@ export const CompositeViewMixin = {
     // Register some events, if the child view trigger one of these
     // events, the child view will be automatically removed.
     this.listenToOnce(view, 'remove dispose', () => {
-      this.removeSubView(view);
+      this.removeSubViews(view);
     });
   },
 

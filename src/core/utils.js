@@ -30,3 +30,5 @@ export const keys = _.keys;
 export const result = _.result;
 export const isString = _.isString;
 export const isArray = _.isArray;
+export const isNull = _.isNull;
+export const isUndefined = _.isUndefined;

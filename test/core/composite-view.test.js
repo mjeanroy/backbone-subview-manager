@@ -52,7 +52,7 @@ describe('CompositeView', () => {
     expect(view._subviews.get(cid)).toBe(subview);
     expect(view._hasSubViews()).toBe(true);
 
-    const r2 = view.removeSubView(subview);
+    const r2 = view.removeSubViews(subview);
 
     expect(r2).toBe(view);
     expect(view._subviews.get(cid)).not.toBeDefined();
@@ -85,7 +85,7 @@ describe('CompositeView', () => {
 
     spy.calls.reset();
 
-    view.removeSubView(subview);
+    view.removeSubViews(subview);
     subview.trigger(evt);
     expect(spy).not.toHaveBeenCalled();
   });
@@ -126,7 +126,7 @@ describe('CompositeView', () => {
     expect(view._subviews).not.toBeDefined();
     expect(view._hasSubViews()).toBe(false);
 
-    view.removeSubView(subview);
+    view.removeSubViews(subview);
 
     expect(view._subviews).not.toBeDefined();
     expect(view._hasSubViews()).toBe(false);
