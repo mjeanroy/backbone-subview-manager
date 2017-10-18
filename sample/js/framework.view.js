@@ -95,7 +95,9 @@ export class FrameworkView extends Backbone.View {
    */
   doRemove(e) {
     e.preventDefault();
-    this.remove();
+    this.$el.fadeOut(() => {
+      this.remove();
+    });
   }
 
   /**
