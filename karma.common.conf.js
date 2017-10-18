@@ -92,6 +92,7 @@ module.exports = (config) => ({
     sourcemap: 'inline',
     format: 'iife',
     name: conf.moduleName,
+    legacy: true,
     external: _.keys(conf.globals),
     globals: conf.globals,
   },

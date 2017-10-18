@@ -38,6 +38,7 @@ module.exports = {
   },
 
   external: _.keys(conf.globals),
+  legacy: true,
 
   plugins: [
     stripBanner(),
