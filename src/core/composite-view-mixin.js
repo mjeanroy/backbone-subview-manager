@@ -63,7 +63,7 @@ export const CompositeViewMixin = {
    * @param {Object} options Initialization options.
    * @return {ViewImpl} The created subview.
    */
-  initSubView(ViewImpl, options = {}) {
+  initSubView(ViewImpl, options) {
     const view = new ViewImpl(options);
     this.addSubViews(view);
     return view;
