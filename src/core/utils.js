@@ -29,3 +29,4 @@ export const forEach = _.forEach;
 export const keys = _.keys;
 export const result = _.result;
 export const isString = _.isString;
+export const isArray = _.isArray;

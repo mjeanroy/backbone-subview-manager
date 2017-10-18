@@ -48,9 +48,26 @@ describe('CompositeViewMixin', () => {
     const subview = new Backbone.View();
     const cid = subview.cid;
 
-    const result = view.addSubView(subview);
+    const result = view.addSubViews(subview);
 
     expect(result).toBe(view);
+    expect(view._subviews.get(cid)).toBe(subview);
+    expect(view._hasSubViews()).toBe(true);
+
+    view.removeSubView(subview);
+
+    expect(view._subviews.get(cid)).not.toBeDefined();
+    expect(view._hasSubViews()).toBe(false);
+  });
+
+  it('should init subview and remove it', () => {
+    const subview = view.initSubView(Backbone.View);
+
+    expect(subview).toBeDefined();
+    expect(subview).not.toBe(view);
+    expect(subview instanceof Backbone.View).toBe(true);
+
+    const cid = subview.cid;
     expect(view._subviews.get(cid)).toBe(subview);
     expect(view._hasSubViews()).toBe(true);
 
@@ -79,7 +96,7 @@ describe('CompositeViewMixin', () => {
     const subview = new Backbone.View();
     const cid = subview.cid;
 
-    const r1 = view.addSubView(subview);
+    const r1 = view.addSubViews(subview);
 
     expect(r1).toBe(view);
     expect(view._subviews.get(cid)).toBe(subview);
@@ -96,7 +113,7 @@ describe('CompositeViewMixin', () => {
     const subview = new Backbone.View();
     const cid = subview.cid;
 
-    const r1 = view.addSubView(subview);
+    const r1 = view.addSubViews(subview);
 
     expect(r1).toBe(view);
     expect(view._subviews.get(cid)).toBe(subview);
@@ -112,7 +129,7 @@ describe('CompositeViewMixin', () => {
     const subview = new Backbone.View();
     const cid = subview.cid;
 
-    const r1 = view.addSubView(subview);
+    const r1 = view.addSubViews(subview);
 
     expect(r1).toBe(view);
     expect(view._subviews.get(cid)).toBe(subview);
@@ -130,8 +147,8 @@ describe('CompositeViewMixin', () => {
     const cid1 = subview1.cid;
     const cid2 = subview2.cid;
 
-    view.addSubView(subview1);
-    view.addSubView(subview2);
+    view.addSubViews(subview1);
+    view.addSubViews(subview2);
 
     expect(view._subviews.get(cid1)).toBe(subview1);
     expect(view._subviews.get(cid2)).toBe(subview2);
@@ -144,7 +161,7 @@ describe('CompositeViewMixin', () => {
     const evt = 'evt';
 
     view.listenTo(subview, evt, spy);
-    view.addSubView(subview);
+    view.addSubViews(subview);
     subview.trigger(evt);
     expect(spy).toHaveBeenCalled();
 
@@ -159,8 +176,8 @@ describe('CompositeViewMixin', () => {
     const subview1 = new Backbone.View();
     const subview2 = new Backbone.View();
 
-    view.addSubView(subview1);
-    view.addSubView(subview2);
+    view.addSubViews(subview1);
+    view.addSubViews(subview2);
 
     expect(view._subviews.get(subview1.cid)).toBe(subview1);
     expect(view._subviews.get(subview2.cid)).toBe(subview2);

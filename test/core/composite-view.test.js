@@ -46,7 +46,7 @@ describe('CompositeView', () => {
     const subview = new Backbone.View();
     const cid = subview.cid;
 
-    const r1 = view.addSubView(subview);
+    const r1 = view.addSubViews(subview);
 
     expect(r1).toBe(view);
     expect(view._subviews.get(cid)).toBe(subview);
@@ -65,8 +65,8 @@ describe('CompositeView', () => {
     const cid1 = subview1.cid;
     const cid2 = subview2.cid;
 
-    view.addSubView(subview1);
-    view.addSubView(subview2);
+    view.addSubViews(subview1);
+    view.addSubViews(subview2);
 
     expect(view._subviews.get(cid1)).toBe(subview1);
     expect(view._subviews.get(cid2)).toBe(subview2);
@@ -79,7 +79,7 @@ describe('CompositeView', () => {
     const evt = 'evt';
 
     view.listenTo(subview, evt, spy);
-    view.addSubView(subview);
+    view.addSubViews(subview);
     subview.trigger(evt);
     expect(spy).toHaveBeenCalled();
 
@@ -94,8 +94,8 @@ describe('CompositeView', () => {
     const subview1 = new Backbone.View();
     const subview2 = new Backbone.View();
 
-    view.addSubView(subview1);
-    view.addSubView(subview2);
+    view.addSubViews(subview1);
+    view.addSubViews(subview2);
 
     expect(view._subviews.get(subview1.cid)).toBe(subview1);
     expect(view._subviews.get(subview2.cid)).toBe(subview2);
@@ -140,8 +140,8 @@ describe('CompositeView', () => {
     spyOn(subview2, 'remove').and.callThrough();
     spyOn(view, 'removeSubViews').and.callThrough();
 
-    view.addSubView(subview1);
-    view.addSubView(subview2);
+    view.addSubViews(subview1);
+    view.addSubViews(subview2);
 
     expect(subview1.remove).not.toHaveBeenCalled();
     expect(subview2.remove).not.toHaveBeenCalled();

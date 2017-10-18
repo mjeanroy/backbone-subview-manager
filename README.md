@@ -92,13 +92,9 @@ export class MyView extends CompositeView {
 
 The following methods can be used on any `CompositeView`:
 
-##### `[this] addSubView(view)`
-
-Register the subview that will be automatically removed when the parent view is removed.
-
 ##### `[this] addSubViews(views)`
 
-Register array of subview that will be automatically removed when the parent view is removed.
+Register subview or array of subview that will be automatically removed when the parent view is removed.
 
 ##### `[view] initSubView(ViewImpl, options)`
 

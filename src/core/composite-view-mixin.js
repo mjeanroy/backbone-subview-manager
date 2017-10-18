@@ -23,7 +23,7 @@
  */
 
 import {Cache} from './cache';
-import {forEach, isString, result} from './utils';
+import {forEach, isString, isArray, result} from './utils';
 
 export const CompositeViewMixin = {
   /**
@@ -39,27 +39,19 @@ export const CompositeViewMixin = {
   /**
    * Register subview.
    *
-   * @param {Object} view The view.
-   * @return {this} The view (for chaining).
-   */
-  addSubView(view) {
-    this._ensureSubViews();
-    this._addSubView(view);
-    return this;
-  },
-
-  /**
-   * Register subview.
-   *
-   * @param {Array<Object>} views Array of views to add.
+   * @param {Object|Array<Object>} views The view (or array of views).
    * @return {this} The view (for chaining).
    */
   addSubViews(views) {
-    this._ensureSubViews();
+    const array = isArray(views) ? views : [views];
 
-    forEach(views, (view) => {
-      this._addSubView(view);
-    });
+    if (array.length > 0) {
+      this._ensureSubViews();
+
+      forEach(array, (view) => {
+        this._addSubView(view);
+      });
+    }
 
     return this;
   },
@@ -73,7 +65,7 @@ export const CompositeViewMixin = {
    */
   initSubView(ViewImpl, options = {}) {
     const view = new ViewImpl(options);
-    this.addSubView(view);
+    this.addSubViews(view);
     return view;
   },
 
