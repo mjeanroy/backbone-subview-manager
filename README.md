@@ -1,5 +1,7 @@
 ### Backbone Subview-Manager
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/mjeanroy/backbone-subview-manager.svg)](https://greenkeeper.io/)
+
 Minimalist mixin and abstract view implementation to manager subviews in your Backbone application.
 
 #### Installation
