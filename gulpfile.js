@@ -71,7 +71,14 @@ gulp.task('lint', () => {
   });
 });
 
-gulp.task('travis', ['test']);
+gulp.task('travis', () => {
+  if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
+    gutil.log(gutil.colors.grey('SauceLab environment not set, running classic test suite'));
+    return runKarma('test');
+  }
+
+  return runKarma('saucelab');
+});
 
 gulp.task('build', ['clean'], () => {
   return applyRollup(rollupConf)
