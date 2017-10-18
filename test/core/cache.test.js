@@ -149,8 +149,15 @@ describe('Cache', () => {
     cache.set(k2, v2);
     cache.forEach(iteratee);
 
-    expect(iteratee).toHaveBeenCalledWith(v1, k1, cache);
-    expect(iteratee).toHaveBeenCalledWith(v2, k2, cache);
+    expect(iteratee.calls.count()).toBe(2);
+
+    const call1 = iteratee.calls.all()[0];
+    expect(call1.args[0]).toBe(v1);
+    expect(call1.args[1]).toBe(k1);
+
+    const call2 = iteratee.calls.all()[1];
+    expect(call2.args[0]).toBe(v2);
+    expect(call2.args[1]).toBe(k2);
   });
 
   it('should execute callback for removed elements', () => {
@@ -165,7 +172,11 @@ describe('Cache', () => {
     cache.delete(k1);
     cache.forEach(iteratee);
 
-    expect(iteratee).not.toHaveBeenCalledWith(v1, k1, jasmine.anything());
-    expect(iteratee).toHaveBeenCalledWith(v2, k2, cache);
+    expect(iteratee).toHaveBeenCalled();
+    expect(iteratee.calls.count()).toBe(1);
+
+    const call = iteratee.calls.all()[0];
+    expect(call.args[0]).toBe(v2);
+    expect(call.args[1]).toBe(k2);
   });
 });
