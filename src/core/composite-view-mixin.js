@@ -23,7 +23,7 @@
  */
 
 import {Cache} from './cache';
-import {forEach, isString, partial, result} from './utils';
+import {forEach, isString, result} from './utils';
 
 export const CompositeViewMixin = {
   /**
@@ -158,7 +158,9 @@ export const CompositeViewMixin = {
 
     // Register some events, if the child view trigger one of these
     // events, the child view will be automatically removed.
-    this.listenToOnce(view, 'remove dispose', partial(this.removeSubView, view));
+    this.listenToOnce(view, 'remove dispose', () => {
+      this.removeSubView(view);
+    });
   },
 
   /**
