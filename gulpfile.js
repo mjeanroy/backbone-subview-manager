@@ -36,6 +36,9 @@ const uglify = require('gulp-uglify');
 const headerComment = require('gulp-header-comment');
 const stripBanner = require('gulp-strip-banner');
 const rename = require('gulp-rename');
+const bump = require('gulp-bump');
+const tagVersion = require('gulp-tag-version');
+const git = require('gulp-git');
 const KarmaServer = karma.Server;
 const rollup = require('rollup');
 const alias = require('rollup-plugin-alias');
@@ -93,6 +96,34 @@ gulp.task('build', ['clean'], () => {
         .pipe(rename({extname: '.min.js'}))
         .pipe(gulp.dest(path.join(conf.dist, 'es5')));
     });
+});
+
+['minor', 'major', 'patch'].forEach((type) => {
+  const ROOT = conf.root;
+  const PKG_JSON = path.join(ROOT, 'package.json');
+  const DIST = conf.dist;
+
+  gulp.task(`bump:${type}`, () => (
+    gulp.src(PKG_JSON)
+      .pipe(bump({type}))
+      .pipe(gulp.dest(ROOT))
+  ));
+
+  gulp.task(`commit:${type}`, ['build', `bump:${type}`], () => (
+    gulp.src([PKG_JSON, DIST])
+      .pipe(git.add({args: '-f'}))
+      .pipe(git.commit('release: release version'))
+  ));
+
+  gulp.task(`tag:${type}`, [`commit:${type}`], () => (
+    gulp.src([PKG_JSON]).pipe(tagVersion())
+  ));
+
+  gulp.task(`release:${type}`, [`tag:${type}`], () => (
+    gulp.src([DIST])
+      .pipe(git.rm({args: '-r'}))
+      .pipe(git.commit('release: prepare next release'))
+  ));
 });
 
 gulp.task('serve', ['build'], () => {
