@@ -81,7 +81,7 @@ export const CompositeViewMixin = {
       if (isNull(views) || isUndefined(views)) {
         this._clearSubViews();
       } else {
-        this._removeEachSubViews(views);
+        this._removeSubViews(views);
       }
     }
 
@@ -113,7 +113,7 @@ export const CompositeViewMixin = {
    * @param {string|Object|Array<string|object>} views View, or array of views, to remove.
    * @return {void}
    */
-  _removeEachSubViews(views) {
+  _removeSubViews(views) {
     const array = isArray(views) ? views : [views];
     forEach(array, (view) => {
       const cid = isString(view) ? view : view.cid;
