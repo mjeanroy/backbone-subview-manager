@@ -22,9 +22,16 @@
  * SOFTWARE.
  */
 
-import './cache.test';
-import './cast-array.test';
-import './composite-view-mixin.test';
-import './composite-view.test';
-import './is-nil.test';
-import './parse-cid.test';
+import {isArray} from './utils';
+
+/**
+ * Translate parameter to an array:
+ * - If it is an array, it is automatically returned.
+ * - Otherwise, an array containing parameter as single element is created and returned.
+ *
+ * @param {*} array The array, or anything else.
+ * @return {Array} The created array.
+ */
+export function castArray(array) {
+  return isArray(array) ? array : [array];
+}

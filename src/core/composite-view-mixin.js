@@ -23,7 +23,10 @@
  */
 
 import {Cache} from './cache';
-import {forEach, isString, isArray, isNull, isUndefined, result} from './utils';
+import {forEach, isNull, result} from './utils';
+import {isNil} from './is-nil';
+import {castArray} from './cast-array';
+import {parseCid} from './parse-cid';
 
 export const CompositeViewMixin = {
   /**
@@ -43,7 +46,7 @@ export const CompositeViewMixin = {
    * @return {this} The view (for chaining).
    */
   addSubViews(views) {
-    const array = isArray(views) ? views : [views];
+    const array = castArray(views);
 
     if (array.length > 0) {
       this._ensureSubViews();
@@ -99,6 +102,26 @@ export const CompositeViewMixin = {
   },
 
   /**
+   * Get subiew associated to:
+   * - A given cid.
+   * - Or the stored subview if the parameter is a backbone view.
+   *
+   * If the stored subview cannot be found, `null` is returned.
+   *
+   * @param {string|Object} id The view id.
+   * @return {Object} The subview, or `null`.
+   */
+  getSubView(id) {
+    if (!this._hasSubViews()) {
+      return null;
+    }
+
+    const cid = parseCid(id);
+    const subview = isNull(cid) ? null : this._subviews.get(cid);
+    return subview || null;
+  },
+
+  /**
    * Remove subview (or array of subviews).
    * If the function is called without any parameters, all views will be removed.
    *
@@ -107,7 +130,7 @@ export const CompositeViewMixin = {
    */
   removeSubViews(views) {
     if (this._hasSubViews()) {
-      if (isNull(views) || isUndefined(views)) {
+      if (isNil(views)) {
         this._clearSubViews();
       } else {
         this._removeSubViews(views);
@@ -143,9 +166,10 @@ export const CompositeViewMixin = {
    * @return {void}
    */
   _removeSubViews(views) {
-    const array = isArray(views) ? views : [views];
+    const array = castArray(views);
+
     forEach(array, (view) => {
-      const cid = isString(view) ? view : view.cid;
+      const cid = parseCid(view);
       if (this._subviews.has(cid)) {
         this._removeSubView(this._subviews.get(cid));
         this._subviews.delete(cid);

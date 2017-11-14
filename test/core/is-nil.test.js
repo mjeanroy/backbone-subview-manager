@@ -22,9 +22,16 @@
  * SOFTWARE.
  */
 
-import './cache.test';
-import './cast-array.test';
-import './composite-view-mixin.test';
-import './composite-view.test';
-import './is-nil.test';
-import './parse-cid.test';
+import {isNil} from '../../src/core/is-nil';
+
+describe('isNil', () => {
+  it('should check if object is null or undefined', () => {
+    expect(isNil(null)).toBe(true);
+    expect(isNil(undefined)).toBe(true);
+    expect(isNil(void 0)).toBe(true);
+
+    expect(isNil(false)).toBe(false);
+    expect(isNil('')).toBe(false);
+    expect(isNil(0)).toBe(false);
+  });
+});

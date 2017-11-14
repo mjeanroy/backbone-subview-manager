@@ -22,9 +22,18 @@
  * SOFTWARE.
  */
 
-import './cache.test';
-import './cast-array.test';
-import './composite-view-mixin.test';
-import './composite-view.test';
-import './is-nil.test';
-import './parse-cid.test';
+import {castArray} from '../../src/core/cast-array';
+
+describe('castArray', () => {
+  it('should return array', () => {
+    const input = [];
+    const output = castArray(input);
+    expect(output).toBe(input);
+  });
+
+  it('should create singleton array', () => {
+    const input = '';
+    const output = castArray(input);
+    expect(output).toEqual([input]);
+  });
+});

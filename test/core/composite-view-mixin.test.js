@@ -290,4 +290,38 @@ describe('CompositeViewMixin', () => {
     expect(view._hasSubViews()).toBe(false);
     expect(factory).not.toHaveBeenCalled();
   });
+
+  it('should get subview', () => {
+    const subview1 = new Backbone.View();
+    const subview2 = new Backbone.View();
+
+    view.addSubViews([subview1, subview2]);
+
+    expect(view.getSubView(subview1.cid)).toBe(subview1);
+    expect(view.getSubView(subview2.cid)).toBe(subview2);
+  });
+
+  it('should get and return subview', () => {
+    const subview1 = new Backbone.View();
+    const subview2 = new Backbone.View();
+
+    view.addSubViews([subview1, subview2]);
+
+    expect(view.getSubView(subview1)).toBe(subview1);
+    expect(view.getSubView(subview2)).toBe(subview2);
+  });
+
+  it('should try to get subview and return null without cid', () => {
+    const subview1 = new Backbone.View();
+    expect(view.getSubView(subview1)).toBe(null);
+  });
+
+  it('should try to get subview and return null without subview', () => {
+    expect(view.getSubView('foo')).toBe(null);
+  });
+
+  it('should try to get subview and return null without valid parameter', () => {
+    expect(view.getSubView(null)).toBe(null);
+    expect(view.getSubView(undefined)).toBe(null);
+  });
 });

@@ -22,9 +22,25 @@
  * SOFTWARE.
  */
 
-import './cache.test';
-import './cast-array.test';
-import './composite-view-mixin.test';
-import './composite-view.test';
-import './is-nil.test';
-import './parse-cid.test';
+import {isString} from './utils';
+import {isNil} from './is-nil';
+
+/**
+ * Extract view cid:
+ * - If parameter is already a `string`, it is returned.
+ * - Otherwise, the `cid` property of `view` is returned.
+ *
+ * @param {string|Object} view The view containing a cid, or the cid.
+ * @return {string} The cid.
+ */
+export function parseCid(view) {
+  if (isNil(view)) {
+    return null;
+  }
+
+  if (isString(view)) {
+    return view;
+  }
+
+  return view.cid || null;
+}

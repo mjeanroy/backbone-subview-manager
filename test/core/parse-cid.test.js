@@ -22,9 +22,30 @@
  * SOFTWARE.
  */
 
-import './cache.test';
-import './cast-array.test';
-import './composite-view-mixin.test';
-import './composite-view.test';
-import './is-nil.test';
-import './parse-cid.test';
+import Backbone from 'backbone';
+import {parseCid} from '../../src/core/parse-cid';
+
+describe('parseCid', () => {
+  it('should return null or undefined', () => {
+    expect(parseCid(null)).toBe(null);
+    expect(parseCid(undefined)).toBe(null);
+    expect(parseCid(void 0)).toBe(null);
+  });
+
+  it('should return string', () => {
+    expect(parseCid('_cid1')).toBe('_cid1');
+    expect(parseCid('')).toBe('');
+  });
+
+  it('should return view cid', () => {
+    const view = new Backbone.View();
+    const cid = view.cid;
+
+    expect(cid).toBeTruthy();
+    expect(parseCid(view)).toBe(cid);
+  });
+
+  it('should return null for object without cid', () => {
+    expect(parseCid({})).toBe(null);
+  });
+});

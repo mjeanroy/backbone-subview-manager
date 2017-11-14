@@ -22,9 +22,14 @@
  * SOFTWARE.
  */
 
-import './cache.test';
-import './cast-array.test';
-import './composite-view-mixin.test';
-import './composite-view.test';
-import './is-nil.test';
-import './parse-cid.test';
+import {isNull, isUndefined} from './utils';
+
+/**
+ * Check that given object is `null` or `undefined`.
+ *
+ * @param {*} o The object to test.
+ * @return {boolean} `true` if `o` is `null` or `undefined`, `false` otherwise.
+ */
+export function isNil(o) {
+  return isNull(o) || isUndefined(o);
+}
