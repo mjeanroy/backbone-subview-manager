@@ -216,13 +216,17 @@ export const CompositeViewMixin = {
    * @return {void}
    */
   _addSubView(view) {
+    // Get the cid.
+    const cid = view.cid;
+
     // Register view.
-    this._subviews.set(view.cid, view);
+    this._subviews.set(cid, view);
 
     // Register some events, if the child view trigger one of these
     // events, the child view will be automatically removed.
     this.listenToOnce(view, 'remove dispose', () => {
-      this.removeSubViews(view);
+      this._removeSubView(view);
+      this._subviews.delete(cid);
     });
   },
 
