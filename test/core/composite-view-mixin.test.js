@@ -214,4 +214,80 @@ describe('CompositeViewMixin', () => {
     expect(view._subviews).not.toBeDefined();
     expect(view._hasSubViews()).toBe(false);
   });
+
+  it('should attach subviews', () => {
+    const SubView = Backbone.View.extend({
+      initialize(options) {
+        this._el = options.el;
+        this._idx = options.idx;
+      },
+    });
+
+    view.setElement($('<div><span>#1</span><span>#2</span></div>'));
+
+    const factory = jasmine.createSpy('factory').and.callFake((opts) => {
+      const subview = new SubView(opts);
+      subview.$el.attr('cid', subview.cid);
+      return subview;
+    });
+
+    const result = view.attachSubViews('span', factory);
+
+    expect(result).toBe(view);
+    expect(view._hasSubViews()).toBe(true);
+    expect(view._subviews.size).toBe(2);
+
+    const span = view.$el.find('span');
+    const span1 = span.eq(0);
+    const span2 = span.eq(1);
+
+    expect(factory).toHaveBeenCalledWith({
+      el: span1.get(0),
+      idx: 0,
+    });
+
+    expect(factory).toHaveBeenCalledWith({
+      el: span2.get(0),
+      idx: 1,
+    });
+
+    const cid1 = span1.attr('cid');
+    const subview1 = view._subviews.get(cid1);
+
+    const cid2 = span2.attr('cid');
+    const subview2 = view._subviews.get(cid2);
+
+    expect(subview1).toBeDefined();
+    expect(subview1._idx).toBe(0);
+    expect(subview1._el).toEqual(span1.get(0));
+    expect(subview1.el).toEqual(span1.get(0));
+
+    expect(subview2).toBeDefined();
+    expect(subview2._idx).toBe(1);
+    expect(subview2._el).toEqual(span2.get(0));
+    expect(subview2.el).toEqual(span2.get(0));
+  });
+
+  it('should not try to attach without matched elements', () => {
+    const SubView = Backbone.View.extend({
+      initialize(options) {
+        this._el = options.el;
+        this._idx = options.idx;
+      },
+    });
+
+    view.setElement($('<div></div>'));
+
+    const factory = jasmine.createSpy('factory').and.callFake((opts) => {
+      const subview = new SubView(opts);
+      subview.$el.attr('cid', subview.cid);
+      return subview;
+    });
+
+    const result = view.attachSubViews('span', factory);
+
+    expect(result).toBe(view);
+    expect(view._hasSubViews()).toBe(false);
+    expect(factory).not.toHaveBeenCalled();
+  });
 });

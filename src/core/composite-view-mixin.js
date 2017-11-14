@@ -65,8 +65,37 @@ export const CompositeViewMixin = {
    */
   initSubView(ViewImpl, options) {
     const view = new ViewImpl(options);
-    this.addSubViews(view);
+
+    this._ensureSubViews();
+    this._addSubView(view);
+
     return view;
+  },
+
+  /**
+   * Attach subview against a given selector, each subview being created by a
+   * factory taking the element context as first parameter.
+   *
+   * The context of the element is:
+   * - The element (`el`) itself (the DOM element, not the `jQuery` object).
+   * - The index of the element in the set of matched elements.
+   *
+   * @param {string} selector Node selector.
+   * @param {function({el: DOMNode, idx: Number})} factory The factory that will create the view.
+   * @return {this} The view (for chaining).
+   */
+  attachSubViews(selector, factory) {
+    const elements = this.$(selector);
+
+    if (elements.length > 0) {
+      this._ensureSubViews();
+
+      forEach(elements, (el, idx) => {
+        this._addSubView(factory({el, idx}));
+      });
+    }
+
+    return this;
   },
 
   /**
