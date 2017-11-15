@@ -86,15 +86,21 @@ gulp.task('travis', () => {
 gulp.task('build', ['clean'], () => {
   return applyRollup(rollupConf)
     .then((src) => {
+      const deferred = Q.defer();
+
       gutil.log(gutil.colors.gray(`Creating ES5 bundle`));
-      return gulp.src(src)
-        .pipe(stripBanner())
-        .pipe(babel())
-        .pipe(headerComment({file: conf.license}))
-        .pipe(gulp.dest(path.join(conf.dist, 'es5')))
-        .pipe(uglify(uglifyConf))
-        .pipe(rename({extname: '.min.js'}))
-        .pipe(gulp.dest(path.join(conf.dist, 'es5')));
+      gulp.src(src)
+          .pipe(stripBanner())
+          .pipe(babel())
+          .pipe(headerComment({file: conf.license}))
+          .pipe(gulp.dest(path.join(conf.dist, 'es5')))
+          .pipe(uglify(uglifyConf))
+          .pipe(rename({extname: '.min.js'}))
+          .pipe(gulp.dest(path.join(conf.dist, 'es5')))
+          .on('error', deferred.reject)
+          .on('finish', deferred.resolve);
+
+      return deferred.promise;
     });
 });
 
