@@ -1,6 +1,6 @@
 {
   "name": "backbone-subview-manager",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Simple subview manager for Backbone",
   "main": "dist/es5/backbone-subview-manager.js",
   "module": "dist/backbone-subview-manager.js",
