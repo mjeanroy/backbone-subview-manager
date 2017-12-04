@@ -324,4 +324,24 @@ describe('CompositeViewMixin', () => {
     expect(view.getSubView(null)).toBe(null);
     expect(view.getSubView(undefined)).toBe(null);
   });
+
+  it('should get all subviews', () => {
+    const subview1 = new Backbone.View();
+    const subview2 = new Backbone.View();
+    view.addSubViews([
+      subview1,
+      subview2,
+    ]);
+
+    const subviews = view.getSubViews();
+
+    expect(subviews.length).toBe(2);
+    expect(subviews).toContain(subview1);
+    expect(subviews).toContain(subview2);
+  });
+
+  it('should try to get all subviews and return empty array without subviews', () => {
+    const subviews = view.getSubViews();
+    expect(subviews).toEqual([]);
+  });
 });

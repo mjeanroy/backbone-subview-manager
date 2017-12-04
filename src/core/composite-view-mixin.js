@@ -122,6 +122,28 @@ export const CompositeViewMixin = {
   },
 
   /**
+   * Get all subviews as an plain old array.
+   *
+   * Note that if you want to get a specific subview, it will be more (much more)
+   * performant to use `getSubView` instead.
+   *
+   * Note that the order in the returned array is not guaranteed.
+   *
+   * @return {Array} Array of subviews.
+   */
+  getSubViews() {
+    const subviews = [];
+
+    if (this._hasSubViews()) {
+      this._subviews.forEach((view) => {
+        subviews.push(view);
+      });
+    }
+
+    return subviews;
+  },
+
+  /**
    * Remove subview (or array of subviews).
    * If the function is called without any parameters, all views will be removed.
    *
