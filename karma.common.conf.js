@@ -23,14 +23,9 @@
 */
 
 const path = require('path');
-const _ = require('lodash');
+const nodeResolve = require('rollup-plugin-node-resolve');
+const commonjs = require('rollup-plugin-commonjs');
 const conf = require('./conf');
-const lib = (file) => ({
-  pattern: path.join(conf.root, 'node_modules', file),
-  watched: false,
-  included: true,
-  served: true,
-});
 
 module.exports = (config) => ({
   // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -42,12 +37,6 @@ module.exports = (config) => ({
 
   // Files to load in the browser.
   files: [
-    // Load mandatory libraries.
-    lib('jquery/dist/jquery.js'),
-    lib('underscore/underscore.js'),
-    lib('backbone/backbone.js'),
-
-    // Load test files.
     path.join(conf.test, 'index.js'),
   ],
 
@@ -93,7 +82,9 @@ module.exports = (config) => ({
     format: 'iife',
     name: conf.moduleName,
     legacy: true,
-    external: _.keys(conf.globals),
-    globals: conf.globals,
+    plugins: [
+      nodeResolve(),
+      commonjs(),
+    ],
   },
 });

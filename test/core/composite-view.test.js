@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 
+import Backbone from 'backbone';
 import {CompositeView} from '../../src/core/composite-view';
 
 describe('CompositeView', () => {

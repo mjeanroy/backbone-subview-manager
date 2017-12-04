@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 
+import $ from 'jquery';
 import Backbone from 'backbone';
 import {CompositeViewMixin} from '../../src/core/composite-view-mixin';
 

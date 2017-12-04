@@ -22,5 +22,10 @@
  * SOFTWARE.
  */
 
-import './boostrap';
-import './core/index';
+import $ from 'jquery';
+import Backbone from 'backbone';
+
+// Ensure jQuery is correctly initialized before each tests.
+beforeEach(() => {
+  Backbone.$ = $;
+});
