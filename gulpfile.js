@@ -29,7 +29,8 @@ const babelCore = require('babel-core');
 const gulp = require('gulp');
 const eslint = require('gulp-eslint');
 const karma = require('karma');
-const gutil = require('gulp-util');
+const log = require('fancy-log');
+const colors = require('ansi-colors');
 const Q = require('q');
 const babel = require('gulp-babel');
 const uglify = require('gulp-uglify');
@@ -76,7 +77,7 @@ gulp.task('lint', () => {
 
 gulp.task('travis', () => {
   if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
-    gutil.log(gutil.colors.grey('SauceLab environment not set, running classic test suite'));
+    log(colors.grey('SauceLab environment not set, running classic test suite'));
     return runKarma('test');
   }
 
@@ -88,7 +89,7 @@ gulp.task('build', ['clean'], () => {
     .then((src) => {
       const deferred = Q.defer();
 
-      gutil.log(gutil.colors.gray(`Creating ES5 bundle`));
+      log(colors.gray(`Creating ES5 bundle`));
       gulp.src(src)
           .pipe(stripBanner())
           .pipe(babel())
@@ -149,25 +150,25 @@ gulp.task('serve', ['build'], () => {
 
     // Rebuild dist file when a source file is updated.
     gulp.watch(srcFiles, () => {
-      gutil.log(gutil.colors.gray(`Change detected in source files, rebuild`));
+      log(colors.gray(`Change detected in source files, rebuild`));
       gulp.start('build');
     });
 
     // Rebuild sample bundle when dist file is updated.
     gulp.watch(distFiles, () => {
-      gutil.log(gutil.colors.gray(`Change detected in dist files, bundle app`));
+      log(colors.gray(`Change detected in dist files, bundle app`));
       sampleBundle();
     });
 
     // Rebuild sample when sample source files are updated.
     gulp.watch([sampleFiles, `!${bundles}`], () => {
-      gutil.log(gutil.colors.gray(`Change detected in sample, bundle app`));
+      log(colors.gray(`Change detected in sample, bundle app`));
       sampleBundle();
     });
 
     // Reload when bundle app is updated.
     gulp.watch([bundles, htmlFiles, cssFiles], () => {
-      gutil.log(gutil.colors.green(`Change detected, notify server`));
+      log(colors.green(`Change detected, notify server`));
       server.notify();
     });
   });
@@ -179,7 +180,7 @@ gulp.task('serve', ['build'], () => {
  * @return {Promise} The done promise.
  */
 function sampleBundle() {
-  gutil.log(gutil.colors.gray(`Running rollup...`));
+  log(colors.gray(`Running rollup...`));
 
   const rollupConf = {
     input: path.join(conf.sample, 'app.js'),
@@ -201,10 +202,10 @@ function sampleBundle() {
 
   return rollup.rollup(rollupConf)
     .then((bundle) => {
-      gutil.log(gutil.colors.gray(`Generating ES6 bundle`));
+      log(colors.gray(`Generating ES6 bundle`));
 
       bundle.generate(rollupConf).then((result) => {
-        gutil.log(gutil.colors.gray(`Generating ES5 bundle`));
+        log(colors.gray(`Generating ES5 bundle`));
 
         const dir = path.join(conf.sample, '.tmp');
         if (!fs.existsSync(dir)) {
@@ -214,12 +215,12 @@ function sampleBundle() {
         const dest = path.join(conf.sample, '.tmp', 'bundle.js');
         const es5 = babelCore.transform(result.code, babelConf);
 
-        gutil.log(gutil.colors.gray(`Writing ES5 bundle to: ${dest}`));
+        log(colors.gray(`Writing ES5 bundle to: ${dest}`));
         fs.writeFileSync(dest, es5.code, 'utf-8');
       });
     })
     .catch((err) => {
-      gutil.log(gutil.colors.red(err));
+      log(colors.red(err));
     });
 }
 
@@ -235,7 +236,7 @@ function runKarma(mode) {
   const onDone = () => deferred.resolve();
   const config = {configFile};
 
-  gutil.log(gutil.colors.gray(`Running Karma server with configuration: ${configFile}`));
+  log(colors.gray(`Running Karma server with configuration: ${configFile}`));
 
   const server = new KarmaServer(config, onDone);
   server.start();
@@ -249,9 +250,9 @@ function runKarma(mode) {
  * @return {Promise} The done promise.
  */
 function applyRollup(config) {
-  gutil.log(gutil.colors.gray(`Rollup entry point`));
+  log(colors.gray(`Rollup entry point`));
   return rollup.rollup(config).then((bundle) => {
-    gutil.log(gutil.colors.gray(`Writing rollup bundle`));
+    log(colors.gray(`Writing rollup bundle`));
     return bundle.write(config.output).then(() => config.output.file);
   });
 }
