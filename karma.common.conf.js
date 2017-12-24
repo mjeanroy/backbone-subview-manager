@@ -78,13 +78,17 @@ module.exports = (config) => ({
 
   // Rollup Configuration
   rollupPreprocessor: {
-    sourcemap: 'inline',
-    format: 'iife',
-    name: conf.moduleName,
-    legacy: true,
+    output: {
+      format: 'iife',
+      name: conf.moduleName,
+      sourcemap: 'inline',
+    },
+
     plugins: [
       nodeResolve(),
       commonjs(),
     ],
+
+    legacy: true,
   },
 });
