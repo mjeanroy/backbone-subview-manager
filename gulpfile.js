@@ -184,8 +184,11 @@ function sampleBundle() {
 
   const rollupConf = {
     input: path.join(conf.sample, 'app.js'),
-    format: 'iife',
-    name: 'Sample',
+    output: {
+      format: 'iife',
+      name: 'Sample',
+    },
+
     plugins: [
       alias({
         'backbone-subview-manager': path.join(conf.dist, 'backbone-subview-manager.js'),
