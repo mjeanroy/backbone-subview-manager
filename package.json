@@ -68,7 +68,7 @@
     "gulp": "3.9.1",
     "gulp-babel": "7.0.0",
     "gulp-bump": "3.0.0",
-    "gulp-eslint": "4.0.1",
+    "gulp-eslint": "4.0.2",
     "gulp-git": "2.5.1",
     "gulp-header-comment": "0.3.0",
     "gulp-live-server": "0.0.31",
