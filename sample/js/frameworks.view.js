@@ -32,42 +32,43 @@ import {FrameworkView} from './framework.view';
  * Display list of frameworks.
  * @class
  */
- /**
-  * Display list of frameworks.
-  * @class
-  */
- export class FrameworksView extends CompositeView {
-   /**
-    * Initialize callback.
-    * @return {void}
-    * @override
-    */
-   initialize() {
-     this.collection = new FrameworksCollection();
-     this.listenTo(this.collection, 'sync', this.render);
-     this.collection.fetch();
-   }
 
-   /**
-    * Render collection into sub-views.
-    * @return {void}
-    */
-   render() {
-     const template = Backbone.$('[data-template-id="frameworks"]').html();
-     const templateFn = _.template(template);
-     const output = templateFn();
-     this.$el.html(output);
+/**
+ * Display list of frameworks.
+ * @class
+ */
+export class FrameworksView extends CompositeView {
+  /**
+   * Initialize callback.
+   * @return {void}
+   * @override
+   */
+  initialize() {
+    this.collection = new FrameworksCollection();
+    this.listenTo(this.collection, 'sync', this.render);
+    this.collection.fetch();
+  }
 
-     const container = this.$('.js-frameworks');
+  /**
+   * Render collection into sub-views.
+   * @return {void}
+   */
+  render() {
+    const template = Backbone.$('[data-template-id="frameworks"]').html();
+    const templateFn = _.template(template);
+    const output = templateFn();
+    this.$el.html(output);
 
-     this.addSubViews(this.collection.map((model) => {
-        const subview = new FrameworkView({
-           model,
-        });
+    const container = this.$('.js-frameworks');
 
-        subview.render();
-        container.append(subview.$el);
-        return subview;
-     }));
-   }
- }
+    this.addSubViews(this.collection.map((model) => {
+      const subview = new FrameworkView({
+        model,
+      });
+
+      subview.render();
+      container.append(subview.$el);
+      return subview;
+    }));
+  }
+}

@@ -59,14 +59,15 @@ gulp.task('clean', () => {
 gulp.task('lint', () => {
   const sources = [
     path.join(conf.root, '*.js'),
-    path.join(conf.src, '**/*.js'),
-    path.join(conf.test, '**/*.js'),
+    path.join(conf.src, '**', '*.js'),
+    path.join(conf.test, '**', '*.js'),
+    path.join(conf.sample, '**', '*.js'),
   ];
 
   return gulp.src(sources)
-    .pipe(eslint())
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
+      .pipe(eslint())
+      .pipe(eslint.format())
+      .pipe(eslint.failAfterError());
 });
 
 ['test', 'tdd'].forEach((mode) => {
@@ -86,23 +87,23 @@ gulp.task('travis', () => {
 
 gulp.task('build', ['clean'], () => {
   return applyRollup(rollupConf)
-    .then((src) => {
-      const deferred = Q.defer();
+      .then((src) => {
+        const deferred = Q.defer();
 
-      log(colors.gray(`Creating ES5 bundle`));
-      gulp.src(src)
-          .pipe(stripBanner())
-          .pipe(babel())
-          .pipe(headerComment({file: conf.license}))
-          .pipe(gulp.dest(path.join(conf.dist, 'es5')))
-          .pipe(uglify(uglifyConf))
-          .pipe(rename({extname: '.min.js'}))
-          .pipe(gulp.dest(path.join(conf.dist, 'es5')))
-          .on('error', deferred.reject)
-          .on('finish', deferred.resolve);
+        log(colors.gray(`Creating ES5 bundle`));
+        gulp.src(src)
+            .pipe(stripBanner())
+            .pipe(babel())
+            .pipe(headerComment({file: conf.license}))
+            .pipe(gulp.dest(path.join(conf.dist, 'es5')))
+            .pipe(uglify(uglifyConf))
+            .pipe(rename({extname: '.min.js'}))
+            .pipe(gulp.dest(path.join(conf.dist, 'es5')))
+            .on('error', deferred.reject)
+            .on('finish', deferred.resolve);
 
-      return deferred.promise;
-    });
+        return deferred.promise;
+      });
 });
 
 ['minor', 'major', 'patch'].forEach((type) => {
@@ -112,14 +113,14 @@ gulp.task('build', ['clean'], () => {
 
   gulp.task(`bump:${type}`, () => (
     gulp.src(PKG_JSON)
-      .pipe(bump({type}))
-      .pipe(gulp.dest(ROOT))
+        .pipe(bump({type}))
+        .pipe(gulp.dest(ROOT))
   ));
 
   gulp.task(`commit:${type}`, ['build', `bump:${type}`], () => (
     gulp.src([PKG_JSON, DIST])
-      .pipe(git.add({args: '-f'}))
-      .pipe(git.commit('release: release version'))
+        .pipe(git.add({args: '-f'}))
+        .pipe(git.commit('release: release version'))
   ));
 
   gulp.task(`tag:${type}`, [`commit:${type}`], () => (
@@ -128,8 +129,8 @@ gulp.task('build', ['clean'], () => {
 
   gulp.task(`release:${type}`, [`tag:${type}`], () => (
     gulp.src([DIST])
-      .pipe(git.rm({args: '-r'}))
-      .pipe(git.commit('release: prepare next release'))
+        .pipe(git.rm({args: '-r'}))
+        .pipe(git.commit('release: prepare next release'))
   ));
 });
 
@@ -204,27 +205,27 @@ function sampleBundle() {
   };
 
   return rollup.rollup(rollupConf)
-    .then((bundle) => {
-      log(colors.gray(`Generating ES6 bundle`));
+      .then((bundle) => {
+        log(colors.gray(`Generating ES6 bundle`));
 
-      bundle.generate(rollupConf).then((result) => {
-        log(colors.gray(`Generating ES5 bundle`));
+        bundle.generate(rollupConf).then((result) => {
+          log(colors.gray(`Generating ES5 bundle`));
 
-        const dir = path.join(conf.sample, '.tmp');
-        if (!fs.existsSync(dir)) {
-          fs.mkdirSync(dir);
-        }
+          const dir = path.join(conf.sample, '.tmp');
+          if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
+          }
 
-        const dest = path.join(conf.sample, '.tmp', 'bundle.js');
-        const es5 = babelCore.transform(result.code, babelConf);
+          const dest = path.join(conf.sample, '.tmp', 'bundle.js');
+          const es5 = babelCore.transform(result.code, babelConf);
 
-        log(colors.gray(`Writing ES5 bundle to: ${dest}`));
-        fs.writeFileSync(dest, es5.code, 'utf-8');
+          log(colors.gray(`Writing ES5 bundle to: ${dest}`));
+          fs.writeFileSync(dest, es5.code, 'utf-8');
+        });
+      })
+      .catch((err) => {
+        log(colors.red(err));
       });
-    })
-    .catch((err) => {
-      log(colors.red(err));
-    });
 }
 
 /**

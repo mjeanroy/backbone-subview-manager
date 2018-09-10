@@ -24,9 +24,9 @@
 
 import Backbone from 'backbone';
 
- /**
-  * Framework Model Object.
-  * @class
-  */
- export class FrameworkModel extends Backbone.Model {
- }
+/**
+ * Framework Model Object.
+ * @class
+ */
+export class FrameworkModel extends Backbone.Model {
+}
