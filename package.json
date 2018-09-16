@@ -92,7 +92,7 @@
     "lodash": "4.17.11",
     "phantomjs-prebuilt": "2.1.16",
     "q": "1.5.1",
-    "rollup": "0.65.2",
+    "rollup": "0.66.0",
     "rollup-plugin-alias": "1.4.0",
     "rollup-plugin-commonjs": "9.1.6",
     "rollup-plugin-license": "0.7.0",
