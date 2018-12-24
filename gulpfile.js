@@ -23,12 +23,12 @@
  */
 
 const gulp = require('gulp');
-const clean = require('./build/tasks/clean.js');
-const lint = require('./build/tasks/lint.js');
-const build = require('./build/tasks/build.js');
-const test = require('./build/tasks/test.js');
-const serve = require('./build/tasks/serve.js');
-const release = require('./build/tasks/release.js');
+const clean = require('./tools/tasks/clean.js');
+const lint = require('./tools/tasks/lint.js');
+const build = require('./tools/tasks/build.js');
+const test = require('./tools/tasks/test.js');
+const serve = require('./tools/tasks/serve.js');
+const release = require('./tools/tasks/release.js');
 
 module.exports = {
   'clean': clean,

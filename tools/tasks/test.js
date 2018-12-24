@@ -24,7 +24,7 @@
 
 const path = require('path');
 const karma = require('karma');
-const log = require('../internal/log.js');
+const log = require('../core/log.js');
 const conf = require('../conf/conf.js');
 
 /**
@@ -69,7 +69,7 @@ function saucelab(done) {
  */
 function travis(done) {
   if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
-    log(colors.grey('SauceLab environment not set, running classic test suite'));
+    log.debug('SauceLab environment not set, running classic test suite');
     test(done);
   } else {
     saucelab(done);
@@ -84,7 +84,7 @@ function travis(done) {
  * @return {void}
  */
 function runKarma(mode, done) {
-  const configFile = path.join(conf.root, 'build', 'conf', `karma.${mode}.conf.js`);
+  const configFile = path.join(conf.root, 'tools', 'conf', `karma.${mode}.conf.js`);
   const config = {configFile};
   const srv = new karma.Server(config, (err) => {
     log.debug('Calling done callback of Karma');
