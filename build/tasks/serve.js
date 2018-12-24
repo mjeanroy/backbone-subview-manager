@@ -32,9 +32,9 @@ const commonjs = require('rollup-plugin-commonjs');
 const nodeResolve = require('rollup-plugin-node-resolve');
 const gls = require('gulp-live-server');
 
-const log = require('./internal/log.js');
-const conf = require('../conf.js');
-const babelConf = require('../babel.conf.js');
+const log = require('../internal/log.js');
+const conf = require('../conf/conf.js');
+const babelConf = require('../conf/babel.conf.js');
 const build = require('./build.js');
 
 /**

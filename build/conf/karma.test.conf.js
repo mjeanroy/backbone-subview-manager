@@ -22,29 +22,26 @@
 * SOFTWARE.
 */
 
-const path = require('path');
 const _ = require('lodash');
-const stripBanner = require('rollup-plugin-strip-banner');
-const license = require('rollup-plugin-license');
-const conf = require('./conf');
+const common = require('./karma.common.conf');
 
-module.exports = {
-  input: path.join(conf.src, 'index.js'),
+module.exports = (config) => {
+  config.set(_.extend(common(config), {
+    autoWatch: false,
+    singleRun: true,
+    browsers: [
+      'PhantomJS',
+      'CustomHeadlessChrome',
+    ],
 
-  output: {
-    file: path.join(conf.dist, conf.bundle),
-    format: 'es',
-    globals: conf.globals,
-  },
-
-  external: _.keys(conf.globals),
-
-  plugins: [
-    stripBanner(),
-    license({
-      banner: {
-        file: conf.license,
+    customLaunchers: {
+      CustomHeadlessChrome: {
+        base: 'ChromeHeadless',
+        flags: [
+          '--disable-translate',
+          '--disable-extensions',
+        ],
       },
-    }),
-  ],
+    },
+  }));
 };

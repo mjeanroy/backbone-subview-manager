@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2018 Mickael Jeanroy
+ * Copyright (c) 2016-2017 Mickael Jeanroy
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,24 @@
  */
 
 const path = require('path');
-const del = require('del');
-const conf = require('../conf.js');
+const ROOT = path.join(__dirname, '..', '..');
 
-module.exports = function clean() {
-  return del([
-    conf.dist,
-    path.join(conf.sample, '.tmp'),
-  ]);
+module.exports = {
+  root: ROOT,
+  tasks: path.join(ROOT, 'tasks'),
+  src: path.join(ROOT, 'src'),
+  test: path.join(ROOT, 'test'),
+  sample: path.join(ROOT, 'sample'),
+  license: path.join(ROOT, 'LICENSE'),
+  dist: path.join(ROOT, 'dist'),
+  es5: path.join(ROOT, 'dist', 'es5'),
+  bundle: 'backbone-subview-manager.js',
+  pkg: path.join(ROOT, 'package.json'),
+
+  moduleName: 'BackboneSubviewManager',
+  loose: true,
+  globals: {
+    underscore: '_',
+    backbone: 'Backbone',
+  },
 };

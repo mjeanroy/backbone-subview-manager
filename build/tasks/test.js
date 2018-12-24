@@ -24,8 +24,8 @@
 
 const path = require('path');
 const karma = require('karma');
-const log = require('./internal/log.js');
-const conf = require('../conf.js');
+const log = require('../internal/log.js');
+const conf = require('../conf/conf.js');
 
 /**
  * Run unit tests and exit.
@@ -84,7 +84,7 @@ function travis(done) {
  * @return {void}
  */
 function runKarma(mode, done) {
-  const configFile = path.join(conf.root, `karma.${mode}.conf.js`);
+  const configFile = path.join(conf.root, 'build', 'conf', `karma.${mode}.conf.js`);
   const config = {configFile};
   const srv = new karma.Server(config, (err) => {
     log.debug('Calling done callback of Karma');
