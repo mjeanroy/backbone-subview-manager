@@ -101,11 +101,24 @@ module.exports = (config) => {
     singleRun: true,
 
     reporters: ['dots', 'saucelabs'],
-    browsers: _.keys(browsers),
+    browsers: _.keys(browsers).concat([
+      'CustomHeadlessChrome',
+      'PhantomJS',
+    ]),
+
     concurrency: 1,
     captureTimeout: 120000,
     browserNoActivityTimeout: 45000,
-    customLaunchers: browsers,
+
+    customLaunchers: _.extend(browsers, {
+      CustomHeadlessChrome: {
+        base: 'ChromeHeadless',
+        flags: [
+          '--disable-translate',
+          '--disable-extensions',
+        ],
+      },
+    }),
 
     sauceLabs: {
       build: `TRAVIS #${process.env.TRAVIS_BUILD_NUMBER} (${process.env.TRAVIS_BUILD_ID})`,
