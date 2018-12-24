@@ -32,13 +32,12 @@ module.exports = {
   input: path.join(conf.src, 'index.js'),
 
   output: {
-    file: path.join(conf.dist, 'backbone-subview-manager.js'),
+    file: path.join(conf.dist, conf.bundle),
     format: 'es',
     globals: conf.globals,
   },
 
   external: _.keys(conf.globals),
-  legacy: true,
 
   plugins: [
     stripBanner(),

@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2017 Mickael Jeanroy
+ * Copyright (c) 2016-2018 Mickael Jeanroy
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,24 +23,21 @@
  */
 
 const path = require('path');
-const ROOT = __dirname;
+const gulp = require('gulp');
+const eslint = require('gulp-eslint');
+const conf = require('../conf.js');
 
-module.exports = {
-  root: ROOT,
-  tasks: path.join(ROOT, 'tasks'),
-  src: path.join(ROOT, 'src'),
-  test: path.join(ROOT, 'test'),
-  sample: path.join(ROOT, 'sample'),
-  license: path.join(ROOT, 'LICENSE'),
-  dist: path.join(ROOT, 'dist'),
-  es5: path.join(ROOT, 'dist', 'es5'),
-  bundle: 'backbone-subview-manager.js',
-  pkg: path.join(ROOT, 'package.json'),
+module.exports = function lint() {
+  const sources = [
+    path.join(conf.root, '*.js'),
+    path.join(conf.tasks, '**', '*.js'),
+    path.join(conf.src, '**', '*.js'),
+    path.join(conf.test, '**', '*.js'),
+    path.join(conf.sample, '**', '*.js'),
+  ];
 
-  moduleName: 'BackboneSubviewManager',
-  loose: true,
-  globals: {
-    underscore: '_',
-    backbone: 'Backbone',
-  },
+  return gulp.src(sources)
+      .pipe(eslint())
+      .pipe(eslint.format())
+      .pipe(eslint.failAfterError());
 };
