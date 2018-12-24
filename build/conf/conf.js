@@ -27,7 +27,7 @@ const ROOT = path.join(__dirname, '..', '..');
 
 module.exports = {
   root: ROOT,
-  tasks: path.join(ROOT, 'tasks'),
+  build: path.join(ROOT, 'build'),
   src: path.join(ROOT, 'src'),
   test: path.join(ROOT, 'test'),
   sample: path.join(ROOT, 'sample'),

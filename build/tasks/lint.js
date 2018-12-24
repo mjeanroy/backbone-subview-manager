@@ -31,7 +31,7 @@ const conf = require('../conf/conf.js');
 module.exports = function lint() {
   const sources = [
     path.join(conf.root, '*.js'),
-    path.join(conf.tasks, '**', '*.js'),
+    path.join(conf.build, '**', '*.js'),
     path.join(conf.src, '**', '*.js'),
     path.join(conf.test, '**', '*.js'),
     path.join(conf.sample, '**', '*.js'),
