@@ -25,7 +25,7 @@
 const path = require('path');
 const express = require('express');
 const connectLivereload = require('connect-livereload');
-const conf = require('../conf');
+const conf = require('../build/conf/conf.js');
 
 const port = 8080;
 const app = express();
