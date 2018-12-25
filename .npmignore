@@ -28,7 +28,7 @@
 /package-lock.json
 
 # Ignored file & directories
-/tools
+/scripts
 /sample
 /src
 /test

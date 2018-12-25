@@ -22,25 +22,25 @@
  * SOFTWARE.
  */
 
-const gulp = require('gulp');
-const clean = require('./scripts/clean');
-const lint = require('./scripts/lint');
-const build = require('./scripts/build');
-const test = require('./scripts/test/test');
-const tdd = require('./scripts/test/tdd');
-const travis = require('./scripts/test/travis');
-const serve = require('./scripts/serve');
-const release = require('./scripts/release');
+const path = require('path');
+const ROOT = path.join(__dirname, '..');
 
 module.exports = {
-  'clean': clean,
-  'lint': lint,
-  'build': gulp.series(clean, lint, build),
-  'serve': gulp.series(clean, build, serve),
-  'tdd': tdd,
-  'test': gulp.series(clean, lint, test),
-  'travis': gulp.series(lint, travis),
-  'release:patch': gulp.series(clean, lint, build, test, release.patch),
-  'release:minor': gulp.series(clean, lint, build, test, release.minor),
-  'release:major': gulp.series(clean, lint, build, test, release.major),
+  root: ROOT,
+  scripts: path.join(ROOT, 'scripts'),
+  src: path.join(ROOT, 'src'),
+  test: path.join(ROOT, 'test'),
+  sample: path.join(ROOT, 'sample'),
+  license: path.join(ROOT, 'LICENSE'),
+  pkg: path.join(ROOT, 'package.json'),
+  dist: path.join(ROOT, 'dist'),
+  es5: path.join(ROOT, 'dist', 'es5'),
+
+  bundle: 'backbone-subview-manager.js',
+  moduleName: 'BackboneSubviewManager',
+  loose: true,
+  globals: {
+    underscore: '_',
+    backbone: 'Backbone',
+  },
 };

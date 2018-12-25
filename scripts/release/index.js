@@ -26,8 +26,8 @@ const gulp = require('gulp');
 const bump = require('gulp-bump');
 const tagVersion = require('gulp-tag-version');
 const git = require('gulp-git');
-const log = require('../core/log.js');
-const conf = require('../conf/conf.js');
+const log = require('../log');
+const conf = require('../conf');
 
 /**
  * Update version in number in `package.json` file.

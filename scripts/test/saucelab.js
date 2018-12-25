@@ -22,29 +22,14 @@
  * SOFTWARE.
  */
 
-const path = require('path');
-const gulp = require('gulp');
-const eslint = require('gulp-eslint');
-const log = require('../core/log.js');
-const conf = require('../conf/conf.js');
+const runKarma = require('./run-karma');
 
-module.exports = function lint() {
-  const sources = [
-    path.join(conf.root, '*.js'),
-    path.join(conf.tools, '**', '*.js'),
-    path.join(conf.src, '**', '*.js'),
-    path.join(conf.test, '**', '*.js'),
-    path.join(conf.sample, '**', '*.js'),
-  ];
-
-  log.debug(`Linting source files:`);
-
-  sources.forEach((src) => (
-    log.debug(`  ${src}`)
-  ));
-
-  return gulp.src(sources)
-      .pipe(eslint())
-      .pipe(eslint.format())
-      .pipe(eslint.failAfterError());
+/**
+ * Run test suite on saucelab.
+ *
+ * @param {function} done The `done` callback.
+ * @return {void}
+ */
+module.exports = function saucelab(done) {
+  return runKarma('saucelab', done);
 };

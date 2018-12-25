@@ -31,10 +31,10 @@ const stripBanner = require('gulp-strip-banner');
 const rename = require('gulp-rename');
 const rollup = require('rollup');
 
-const log = require('../core/log.js');
-const conf = require('../conf/conf.js');
-const rollupConf = require('../conf/rollup.conf.js');
-const uglifyConf = require('../conf/uglify.conf.js');
+const log = require('../log');
+const conf = require('../conf');
+const rollupConf = require('./rollup.conf.js');
+const uglifyConf = require('./uglify.conf.js');
 
 /**
  * Create ESM bundle using rollup.

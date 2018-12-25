@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2017 Mickael Jeanroy
+ * Copyright (c) 2016-2018 Mickael Jeanroy
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +22,41 @@
  * SOFTWARE.
  */
 
-const path = require('path');
-const ROOT = path.join(__dirname, '..', '..');
+const log = require('fancy-log');
+const colors = require('ansi-colors');
+
+/**
+ * Log message with `DEBUG` level.
+ *
+ * @param {string} msg The message to log.
+ * @return {void}
+ */
+function debug(msg) {
+  log(colors.gray(msg));
+}
+
+/**
+ * Log message with `ERROR` level.
+ *
+ * @param {string} msg The message to log.
+ * @return {void}
+ */
+function error(msg) {
+  log.error(colors.red(msg));
+}
+
+/**
+ * Log message with `INFO` level.
+ *
+ * @param {string} msg The message to log.
+ * @return {void}
+ */
+function info(msg) {
+  log.info(colors.green(msg));
+}
 
 module.exports = {
-  root: ROOT,
-  tools: path.join(ROOT, 'tools'),
-  src: path.join(ROOT, 'src'),
-  test: path.join(ROOT, 'test'),
-  sample: path.join(ROOT, 'sample'),
-  license: path.join(ROOT, 'LICENSE'),
-  dist: path.join(ROOT, 'dist'),
-  es5: path.join(ROOT, 'dist', 'es5'),
-  bundle: 'backbone-subview-manager.js',
-  pkg: path.join(ROOT, 'package.json'),
-
-  moduleName: 'BackboneSubviewManager',
-  loose: true,
-  globals: {
-    underscore: '_',
-    backbone: 'Backbone',
-  },
+  debug,
+  info,
+  error,
 };

@@ -22,13 +22,14 @@
  * SOFTWARE.
  */
 
-const path = require('path');
-const del = require('del');
-const conf = require('../conf/conf.js');
+const runKarma = require('./run-karma');
 
-module.exports = function clean() {
-  return del([
-    conf.dist,
-    path.join(conf.sample, '.tmp'),
-  ]);
+/**
+ * Run unit tests and exit.
+ *
+ * @param {function} done The `done` callback.
+ * @return {void}
+ */
+module.exports = function test(done) {
+  return runKarma('test', done);
 };

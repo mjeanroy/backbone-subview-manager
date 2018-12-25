@@ -22,25 +22,15 @@
  * SOFTWARE.
  */
 
-const gulp = require('gulp');
-const clean = require('./scripts/clean');
-const lint = require('./scripts/lint');
-const build = require('./scripts/build');
-const test = require('./scripts/test/test');
-const tdd = require('./scripts/test/tdd');
-const travis = require('./scripts/test/travis');
-const serve = require('./scripts/serve');
-const release = require('./scripts/release');
+const _ = require('lodash');
+const common = require('./karma.common.conf');
 
-module.exports = {
-  'clean': clean,
-  'lint': lint,
-  'build': gulp.series(clean, lint, build),
-  'serve': gulp.series(clean, build, serve),
-  'tdd': tdd,
-  'test': gulp.series(clean, lint, test),
-  'travis': gulp.series(lint, travis),
-  'release:patch': gulp.series(clean, lint, build, test, release.patch),
-  'release:minor': gulp.series(clean, lint, build, test, release.minor),
-  'release:major': gulp.series(clean, lint, build, test, release.major),
+module.exports = (config) => {
+  config.set(_.extend(common(config), {
+    autoWatch: true,
+    browsers: ['Chrome'],
+    captureTimeout: 10000,
+    singleRun: false,
+    reportSlowerThan: 2000,
+  }));
 };

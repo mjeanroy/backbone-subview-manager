@@ -22,41 +22,25 @@
  * SOFTWARE.
  */
 
-const log = require('fancy-log');
-const colors = require('ansi-colors');
+const test = require('./test');
+const saucelab = require('./saucelab');
+const log = require('../log');
 
 /**
- * Log message with `DEBUG` level.
+ * Run test suite:
+ * - On saucelab if appropriate environment variables are available (i.e saucelab credentials).
+ * - Or "classical" test suite otherwise.
  *
- * @param {string} msg The message to log.
+ * This task is usually run by travis.
+ *
+ * @param {function} done The `done` callback.
  * @return {void}
  */
-function debug(msg) {
-  log(colors.gray(msg));
-}
-
-/**
- * Log message with `ERROR` level.
- *
- * @param {string} msg The message to log.
- * @return {void}
- */
-function error(msg) {
-  log(colors.red(msg));
-}
-
-/**
- * Log message with `INFO` level.
- *
- * @param {string} msg The message to log.
- * @return {void}
- */
-function info(msg) {
-  log(colors.green(msg));
-}
-
-module.exports = {
-  debug,
-  info,
-  error,
+module.exports = function travis(done) {
+  if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
+    log.debug('SauceLab environment not set, running classic test suite');
+    test(done);
+  } else {
+    saucelab(done);
+  }
 };

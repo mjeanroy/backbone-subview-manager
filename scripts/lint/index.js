@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2017 Mickael Jeanroy
+ * Copyright (c) 2016-2018 Mickael Jeanroy
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +22,29 @@
  * SOFTWARE.
  */
 
+const path = require('path');
 const gulp = require('gulp');
-const clean = require('./scripts/clean');
-const lint = require('./scripts/lint');
-const build = require('./scripts/build');
-const test = require('./scripts/test/test');
-const tdd = require('./scripts/test/tdd');
-const travis = require('./scripts/test/travis');
-const serve = require('./scripts/serve');
-const release = require('./scripts/release');
+const eslint = require('gulp-eslint');
+const log = require('../log');
+const conf = require('../conf');
 
-module.exports = {
-  'clean': clean,
-  'lint': lint,
-  'build': gulp.series(clean, lint, build),
-  'serve': gulp.series(clean, build, serve),
-  'tdd': tdd,
-  'test': gulp.series(clean, lint, test),
-  'travis': gulp.series(lint, travis),
-  'release:patch': gulp.series(clean, lint, build, test, release.patch),
-  'release:minor': gulp.series(clean, lint, build, test, release.minor),
-  'release:major': gulp.series(clean, lint, build, test, release.major),
+module.exports = function lint() {
+  const sources = [
+    path.join(conf.root, '*.js'),
+    path.join(conf.scripts, '**', '*.js'),
+    path.join(conf.src, '**', '*.js'),
+    path.join(conf.test, '**', '*.js'),
+    path.join(conf.sample, '**', '*.js'),
+  ];
+
+  log.debug('Linting source files:');
+
+  sources.forEach((src) => (
+    log.debug(`  ${src}`)
+  ));
+
+  return gulp.src(sources)
+      .pipe(eslint())
+      .pipe(eslint.format())
+      .pipe(eslint.failAfterError());
 };

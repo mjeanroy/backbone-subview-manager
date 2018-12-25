@@ -24,57 +24,7 @@
 
 const path = require('path');
 const karma = require('karma');
-const log = require('../core/log.js');
-const conf = require('../conf/conf.js');
-
-/**
- * Run unit tests and exit.
- *
- * @param {function} done The `done` callback.
- * @return {void}
- */
-function test(done) {
-  return runKarma('test', done);
-}
-
-/**
- * Run unit test and watch for changes to re-run test suite.
- *
- * @param {function} done The `done` callback.
- * @return {void}
- */
-function tdd(done) {
-  return runKarma('tdd', done);
-}
-
-/**
- * Run test suite on saucelab.
- *
- * @param {function} done The `done` callback.
- * @return {void}
- */
-function saucelab(done) {
-  return runKarma('saucelab', done);
-}
-
-/**
- * Run test suite:
- * - On saucelab if appropriate environment variables are available (i.e saucelab credentials).
- * - Or "classical" test suite otherwise.
- *
- * This task is usually run by travis.
- *
- * @param {function} done The `done` callback.
- * @return {void}
- */
-function travis(done) {
-  if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
-    log.debug('SauceLab environment not set, running classic test suite');
-    test(done);
-  } else {
-    saucelab(done);
-  }
-}
+const log = require('../log');
 
 /**
  * Run tests with Karma.
@@ -83,8 +33,8 @@ function travis(done) {
  * @param {function} done The done callback.
  * @return {void}
  */
-function runKarma(mode, done) {
-  const configFile = path.join(conf.root, 'tools', 'conf', `karma.${mode}.conf.js`);
+module.exports = function runKarma(mode, done) {
+  const configFile = path.join(__dirname, `karma.${mode}.conf.js`);
   const config = {configFile};
   const srv = new karma.Server(config, (err) => {
     log.debug('Calling done callback of Karma');
@@ -93,10 +43,4 @@ function runKarma(mode, done) {
 
   log.debug(`Running Karma server with configuration: ${configFile}`);
   srv.start();
-}
-
-module.exports = {
-  test,
-  tdd,
-  travis,
 };

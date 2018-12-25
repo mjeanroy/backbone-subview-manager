@@ -25,8 +25,8 @@
 const path = require('path');
 const express = require('express');
 const connectLivereload = require('connect-livereload');
-const log = require('../tools/core/log.js');
-const conf = require('../tools/conf/conf.js');
+const log = require('../scripts/log');
+const conf = require('../scripts/conf');
 
 const port = 8080;
 const app = express();
@@ -44,5 +44,5 @@ const frameworks = require('./techs.json');
 app.get('/api/frameworks', (req, res) => res.json(frameworks));
 
 app.listen(port, () => {
-  log.info(`Server listening on : http://localhost:${port}`);
+  log.debug(`Server listening on : http://localhost:${port}`);
 });

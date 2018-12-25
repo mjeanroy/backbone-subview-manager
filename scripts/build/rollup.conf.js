@@ -22,15 +22,29 @@
 * SOFTWARE.
 */
 
+const path = require('path');
 const _ = require('lodash');
-const common = require('./karma.common.conf');
+const stripBanner = require('rollup-plugin-strip-banner');
+const license = require('rollup-plugin-license');
+const conf = require('../conf');
 
-module.exports = (config) => {
-  config.set(_.extend(common(config), {
-    autoWatch: true,
-    browsers: ['Chrome'],
-    captureTimeout: 10000,
-    singleRun: false,
-    reportSlowerThan: 2000,
-  }));
+module.exports = {
+  input: path.join(conf.src, 'index.js'),
+
+  output: {
+    file: path.join(conf.dist, conf.bundle),
+    format: 'es',
+    globals: conf.globals,
+  },
+
+  external: _.keys(conf.globals),
+
+  plugins: [
+    stripBanner(),
+    license({
+      banner: {
+        file: conf.license,
+      },
+    }),
+  ],
 };

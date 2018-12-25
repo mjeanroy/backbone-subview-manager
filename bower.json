@@ -25,10 +25,8 @@
     "/src",
     "/test",
     "/sample",
-    "/gulpfile.js",
-    "/conf.js",
-    "/karma.*.conf.js",
-    "/*.conf.js"
+    "/scripts",
+    "/gulpfile.js"
   ],
   "dependencies": {
     "backbone": ">=1.0.0",
