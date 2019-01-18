@@ -24,17 +24,14 @@
 
 const fs = require('fs-extra');
 const path = require('path');
-const babel = require('babel-core');
+const babel = require('@babel/core');
 const gulp = require('gulp');
 const rollup = require('rollup');
-const alias = require('rollup-plugin-alias');
-const commonjs = require('rollup-plugin-commonjs');
-const nodeResolve = require('rollup-plugin-node-resolve');
 const gls = require('gulp-live-server');
 
+const rollupConf = require('./rollup.conf.js');
 const log = require('../log');
 const conf = require('../conf');
-const babelConf = require('../babel.conf');
 const build = require('../build');
 
 /**
@@ -44,28 +41,6 @@ const build = require('../build');
  */
 function generateSampleBundle() {
   log.debug(`Running rollup...`);
-
-  const rollupConf = {
-    input: path.join(conf.sample, 'app.js'),
-
-    output: {
-      format: 'iife',
-      name: 'Sample',
-    },
-
-    plugins: [
-      alias({
-        'backbone-subview-manager': path.join(conf.dist, conf.bundle),
-      }),
-
-      nodeResolve({
-        jsnext: true,
-        main: true,
-      }),
-
-      commonjs(),
-    ],
-  };
 
   return generateBundle(rollupConf)
       .then((code) => createES5Bundle(code))
@@ -107,12 +82,23 @@ function createES5Bundle(code) {
   log.debug(`Generating ES5 bundle`);
 
   const dir = path.join(conf.sample, '.tmp');
-  const dest = path.join(dir, 'bundle.js');
-  const es5 = babel.transform(code, babelConf);
+  const filename = path.join(dir, 'bundle.js');
 
-  log.debug(`Writing ES5 bundle to: ${dest}`);
+  return babel.transformAsync(code, {filename})
+      .then((result) => result.code)
+      .then((code) => writeES5Bundle(code, filename));
+}
 
-  return fs.outputFile(dest, es5, 'utf-8');
+/**
+ * Write ES5 bundle on dist.
+ *
+ * @param {string} code ES5 Code.
+ * @param {string} filename Destination file.
+ * @return {Promise<void>} The promise result.
+ */
+function writeES5Bundle(code, filename) {
+  log.debug(`Writing ES5 bundle to: ${filename}`);
+  return fs.outputFile(filename, code, 'utf-8');
 }
 
 module.exports = function serve() {
