@@ -28,26 +28,37 @@ const common = require('./karma.common.conf');
 const browsers = {
   SL_safari_8: {
     base: 'SauceLabs',
+    platform: 'OS X 10.10',
     browserName: 'safari',
     version: '8.0',
   },
 
   SL_safari_9: {
     base: 'SauceLabs',
+    platform: 'OS X 10.11',
     browserName: 'safari',
     version: '9.0',
   },
 
   SL_safari_10: {
     base: 'SauceLabs',
+    platform: 'OS X 10.11',
     browserName: 'safari',
     version: '10.0',
   },
 
   SL_safari_11: {
     base: 'SauceLabs',
+    platform: 'macOS 10.12',
     browserName: 'safari',
     version: '11.0',
+  },
+
+  SL_safari_11_1: {
+    base: 'SauceLabs',
+    platform: 'macOS 10.13',
+    browserName: 'safari',
+    version: '11.1',
   },
 
   SL_Win10_edge: {
