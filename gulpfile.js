@@ -22,6 +22,8 @@
  * SOFTWARE.
  */
 
+/* eslint-env node */
+
 const gulp = require('gulp');
 const clean = require('./scripts/clean');
 const lint = require('./scripts/lint');
