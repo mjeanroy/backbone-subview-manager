@@ -18,8 +18,11 @@ module.exports = {
     }),
 
     nodeResolve({
-      jsnext: true,
-      main: true,
+      mainFields: [
+        'module',
+        'jsnext:main',
+        'main',
+      ],
     }),
 
     commonjs(),
